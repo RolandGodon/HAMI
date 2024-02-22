@@ -1,0 +1,4 @@
+Building DAG of jobs...
+WildcardError in rule all in file /home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/HAMI/HAMI_PIPELINE.smk, line 3:
+Wildcards in input files cannot be determined from output files: (rule all, line 5, /home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/HAMI/HAMI_PIPELINE.smk)
+'Name'

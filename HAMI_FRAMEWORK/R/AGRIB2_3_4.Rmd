@@ -1,0 +1,258 @@
+---
+title: "Error rate associated to metabarcoding identification "
+author: "Benoit Penel"
+date: "2024-09-02"
+output:
+  html_document:
+    toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## Introduction
+
+The main aim of the following 'Rmarkdown' is to assess the effectiveness of metabarcoding to correctly identify the species contained in samples (True Positive Identification), and to evaluate the rate of systematic errors, *i.e.* false negative identification (FNI) and false positive identification (FPI).
+
+To do this, *"Penel_et_al_2024_Metabarcoding_HAMI_.csv"* database have been used. The database is derived from 491 samples taken during beetle sampling campaigns as part of the 500ENI biodiversity monitoring network, which has been in place in mainland France since 2012. 
+
+The 491 samples come from sampling campaigns carried out between 2020 and 2023 in 8 of the 13 major regions of mainland France (Auvergne-Rhône-Alpes, Bourgogne-Franche-Comté, Haut-de-France, Ile-de-France, Pays de la Loire, Provence-Alpes-Côte-d'Azur, Normandie,Nouvelle Aquitaine).
+
+the dataframe includes 5 variables : 
+
+- sample (character) : Id of sample
+- metabarcoding_RS (interger) : Richness estimated by molecular approach
+- real_RS  : Richness of the sample
+- nbr_FNI.fail : Number of species no identified by molecular approach but identifier by morphological cross-validation.
+- nbr_FNI.threshold : Number of species rejected by molecular according to the 3% threshold but saved by morphological cross-validation.
+
+real_RS, and both nbr_FNI variable were estimated identified thanks to verification carried out by a taxonomic expert (Axel Bourdonnée: https://umr-cbgp.fr/membre/bourdonne/).
+
+```{r,results='hide'}
+data<-read.table("/home/penelben/Documents/THESE/1st_paper/DATA/Penel_et_al_2024_Metabarcoding_HAMI_.csv",sep=";",head=T,dec=".")
+```
+
+
+## Estimation of the number of TPI,FPI and FNI  in each samples : 
+
+<br>
+
+<div style="text-align:center"> ![Fig1 : relation between molecular estimation ,real richness and systematic errors](/home/penelben/Documents/THESE/1st_paper/DATA/picture "picture"){ width=25% }
+</div>
+
+<br>
+
+#### FPI :
+According to fig 1, the number of FPI were calculated as follows:
+
+FPI = *metabarcoding_RS - (real_Rs - FNI)*   
+
+or    
+
+FPI = *metabarcoding_RS - (real_Rs - (nbr_FNI.fail + nbr_FNI.threshold) )*
+
+```{r,results='hide'}
+data$FPI<-data$metabarcoding_RS-(data$real_RS-(data$nbr_FNI.fail+data$nbr_FNI.threshold))
+```
+<br>
+<br>
+
+#### FNItotal  :
+
+Two type of FNI were considered, total number of FNI (T_FNI) were thus calculated as the sum of both type of FNI : 
+
+FNItotal  = *nbr_FNI.fail* + *nbr_FNI.threshold*
+
+```{r,results='hide'}
+data$FNItotal <-data$nbr_FNI.fail+data$nbr_FNI.threshold
+```
+<br>
+<br>
+
+#### TPI :
+
+The number of TPI were finally calculated as follows :
+
+TPI= *metabarcoding_RS* - *FPI*
+
+
+```{r,results='hide'}
+data$TPI<-(data$metabarcoding_RS-data$FPI)
+```
+
+<br>
+<br>
+
+
+
+```{r}
+head(data)
+```
+
+## Estimation of the rate of TPI,FPI and FNI  in each samples : 
+
+#### TPI :
+
+
+TPI rate were calculated as follows : 
+
+TPI rate = *TPI* / (*TPI* + *FNItotal *) 
+
+```{r}
+data$TPIrate<-data$TPI/(data$TPI+data$FNItotal )
+mean(data$TPIrate,na.rm = TRUE);sd(data$TPIrate, na.rm = TRUE)
+```
+<br>
+
+#### FPI :
+FPI rate were calculated as follows : 
+
+FPI rate = *FPI* / (*FPI* + *TPI*)   
+
+```{r}
+data$FPIrate <- data$FPI/(data$FPI+data$TPI)
+data$FPIrate [is.nan(data$FPIrate )] <- 0 #NA value (linked to "0" in both FPI and TPI variable because no identification provide by molecular approach) -> 0
+mean(data$FPIrate , na.rm = TRUE); sd(data$FPIrate, na.rm = TRUE)
+```
+
+<br>
+
+#### FNItotal :
+Finally, FNItotal  were calculated as follows : 
+
+FNItotal  rate = *FNItotal * / (*FNItotal * + *TPI*)    
+
+```{r}
+##FNI
+data$FNItotalrate<-data$FNItotal /(data$FNItotal +data$TPI)
+mean(data$FNItotalrate, na.rm = TRUE);sd(data$FNItotalrate, na.rm = TRUE)
+```
+
+#### Others metric :
+
+As the FNI has two possible origins, we also determined the proportion of the latter in the rate of FNItotal as follows : 
+
+FNI threshold  rate = (*nbr_FNI.threshold* / *FNItotal *)*100
+FNI fail  rate = (*nbr_FNI.fail* / *FNItotal *)*100
+
+```{r}
+##FNI-threshold
+data$FNI_threshold_rate<-(data$nbr_FNI.threshold /data$FNItotal)*100
+mean(data$FNI_threshold_rate, na.rm = TRUE);sd(data$FNI_threshold_rate, na.rm = TRUE)
+##FNI-fail
+data$FNI_fail_rate<-(data$nbr_FNI.fai /data$FNItotal)*100
+mean(data$FNI_fail_rate, na.rm = TRUE);sd(data$FNI_fail_rate, na.rm = TRUE)
+```
+
+We can also estimates the proportion of good identification (*GoodID*) that is provide by molecular approaches. Note that it is different from the ability of molecular approaches to identify species from a given sample (*TPI rate*). For example 100% of the species identified by molecular approaches can be good, but it can represent only 25% of the richness of a given samples.
+
+We calcul the latter  as follows :
+
+GoodID rate = (1 - *FPIrate*)
+
+```{r}
+data$GoodID<-(1-data$FPIrate)
+mean(data$GoodID,na.rm = TRUE);sd(data$GoodID,na.rm = TRUE)
+```
+
+
+#### Relation between metabarcoding richness and real one :
+
+Here, we are no more looking about species composition estimated by molecular approaches and their corresponding congruence with the given samples studied. Rather, we try to focus on a the widest used biodiversity metrix : Richness.  They is any relation between, species richness estimated with molecular approaches and the richness of a given sample ?
+
+```{r}
+#plot of the richness estimated by molecular approach versus real richness 
+plot(jitter(data$real_RS),jitter(data$metabarcoding_RS))
+abline(0:1,col="black",lty="dotted")
+```
+
+Here, the plot seem to show a non linear relation between both richness. We thus used Generalized additive model to model it and assess the relation.
+
+```{r}
+#install.package("mgcv")   ###Install if not already done
+library(mgcv)
+
+#Linear model
+lm_mod1<-lm(metabarcoding_RS~real_RS,data=data)
+summary(lm_mod1)
+AIC(lm_mod1) # 2494
+
+#GAM model (Gauss)
+gam_mod1<-gam(metabarcoding_RS~s(real_RS,k=2),data=data)
+summary(gam_mod1)#Pvalue<0.001 ***
+AICc(gam_mod1) # 2491 Better than LM 
+
+
+#GAM model (Poisson)
+gam_mod2<-gam(metabarcoding_RS~s(real_RS,k=3),family=poisson, data=data)
+summary(gam_mod2)#Pvalue<0.001 ***
+AICc(gam_mod2) # 2464 Better than LM AND GAUSS GAM
+
+
+#GAM model (Quasi-Poisson)
+gam_mod3<-gam(metabarcoding_RS~s(real_RS,k=3),family=quasipoisson, data=data)
+summary(gam_mod3)#Pvalue<0.001 ***
+AICc(gam_mod3) #NA because this family does not return the log-likelihood value required for the AIC calculation
+
+
+
+
+
+par(mfrow = c(2, 3))
+
+#GAM GAUSS
+
+qq.gam(gam_mod1,main="QQ PLOT")
+mtext("Gauss", side = 3, line = -0.1)
+hist(resid(gam_mod1),main="NORMALITY OF RESIDUALS")
+mtext("Gauss", side = 3, line = -0.1)
+plot(resid(gam_mod1) ~ fitted(gam_mod1), main="HOMOSCEDASTICITY");abline(h = 0, col = "red") 
+mtext("Gauss", side = 3, line = -0.1)
+
+#GAM POISSON
+qq.gam(gam_mod2,main="")
+mtext("Poisson", side = 3, line = 0)
+hist(resid(gam_mod2),main="")
+mtext("Poisson", side = 3, line = 0)
+plot(resid(gam_mod2) ~ fitted(gam_mod2));abline(h = 0, col = "red") 
+mtext("Poisson", side = 3, line = 0)
+
+
+
+```
+Our gam model hihghtlight a difference signficative between the richness of a given sample and the one estimated with molecular approach.
+
+
+```{r}
+library(ggplot2)
+
+# Predict values with standard errors
+pred <- predict(gam_mod2, data.frame(real_RS = x), type = "response", se.fit = TRUE)
+
+# Extract predicted values and standard errors
+y_pred <- pred$fit
+se <- pred$se.fit
+
+# Calculate lower and upper bounds for confidence intervals
+lower <- y_pred - 1.96 * se
+upper <- y_pred + 1.96 * se
+
+# Create a dataframe containing the results
+predictions <- data.frame(real_RS = x, metabarcoding_RS = y_pred, lower = lower, upper = upper)
+
+# Plot the graph with confidence intervals
+ggplot(data, aes(x = real_RS, y = metabarcoding_RS)) +
+  geom_bin2d(bins = 30) +  # Density of points
+  labs(x = "Real richness (spp/sample)", y = "Richness estimated by molecular approach (spp/sample)") +  # Axis labels
+  geom_abline(intercept = 0, slope = 1, linetype = "dotted") +  # Add line y = x
+  geom_ribbon(data = predictions, aes(x = real_RS, ymin = lower, ymax = upper), fill = "darkgrey", alpha = 0.5) +  # Add confidence intervals
+  geom_line(data = predictions, aes(x = real_RS, y = metabarcoding_RS), color = "darkred") +  # Add predictive line
+  scale_fill_gradientn(colours = c("#C2E7B0", "#89C998", "#5CAE7A", "#34996E", "#217D63", "#0B5D4E")) +
+  theme_light() +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
+  coord_cartesian(xlim = c(0, 32), ylim = c(0, 32))
+
+
+plot(gam_mod1)
+
+```

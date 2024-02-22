@@ -1,0 +1,22 @@
+
+#NAME AND FRAGMENT 
+Name : "AgriB03"
+DNA_fragment : "BB"
+
+#PATH
+workdir : "/home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK" #General path of the projet
+datadir: "/home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/DATA/test_data" #Path to data
+Scriptdir :  "/home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/SCRIPTS" #Path to scripts 
+
+
+################################
+#Information about samples name : 
+#Your samples need to be discrimated ont the basis of their name. Use alphabectic prefix and number for it e.g : CMEY0001 
+#Duplicate of samples is also necessary. Discrimination between duplicate will be done using suffix : e.g : CMEY0001A /NCE01A
+
+Samplesprefix:
+  Metabarcoding : "CMEY0"
+  Barcoding : "xxxNAxxx" #PUT "xxxNAxxx" if no barcoding data
+  Control : "NC" #please Use NCI/NCE or NCP for Index Extraction and PCR Negative Control
+Numberofnumber : 4 # following prefix
+Samplessuffix: "A/B" #please use A AND B

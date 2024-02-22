@@ -1,0 +1,8 @@
+Building DAG of jobs...
+InputFunctionException in rule Filter_METABARCODING_DATA in file /home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/HAMI/HAMI_PIPELINE.smk, line 5:
+Error:
+  KeyError: 'scriptdir'
+Wildcards:
+
+Traceback:
+  File "/home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/HAMI/HAMI_PIPELINE.smk", line 31, in <lambda> (rule Filter_METABARCODING_DATA, line 7, /home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/HAMI/HAMI_PIPELINE.smk)

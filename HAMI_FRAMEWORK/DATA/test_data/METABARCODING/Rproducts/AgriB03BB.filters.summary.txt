@@ -1,0 +1,8 @@
+"nsamples"	"ntaxa"	"nseqs"
+"all"	22	614	132318
+"samples"	6	394	101300
+"negative"	16	259	31018
+"samples.filter1"	22	614	132313
+"samples.filter2"	11	133	120426
+"samples.filter3"	3	133	98618
+Log = file:AgriB03BB,rfa_filter1:2e-04,number_negatives_filter2:16

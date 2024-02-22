@@ -1,0 +1,32 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job              count
+-------------  -------
+separate_data        1
+total                1
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Tue Feb 20 19:03:18 2024]
+localrule separate_data:
+    input: /home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/DATA/test_data/AgriB03BB_cleaned_abundance.txt
+    output: /home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/DATA/test_data/META/AgriB03BB_abundance_raw_data_METABARCODING.tsv, /home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/DATA/test_data/META/AgriB03BB_Metadata_METABARCODING.csv, /home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/DATA/test_data/BARCODE/AgriB03BB_abundance_raw_data_BARCODING.tsv
+    jobid: 0
+    reason: Missing output files: /home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/DATA/test_data/BARCODE/AgriB03BB_abundance_raw_data_BARCODING.tsv, /home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/DATA/test_data/META/AgriB03BB_Metadata_METABARCODING.csv, /home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/DATA/test_data/META/AgriB03BB_abundance_raw_data_METABARCODING.tsv
+    resources: tmpdir=/tmp
+
+Waiting at most 5 seconds for missing files.
+MissingOutputException in rule separate_data in file /home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/HAMI/HAMI_PIPELINE.smk, line 4:
+Job 0 completed successfully, but some output files are missing. Missing files after 5 seconds. This might be due to filesystem latency. If that is the case, consider to increase the wait time with --latency-wait:
+/home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/DATA/test_data/META/AgriB03BB_abundance_raw_data_METABARCODING.tsv
+/home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/DATA/test_data/META/AgriB03BB_Metadata_METABARCODING.csv
+/home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/DATA/test_data/BARCODE/AgriB03BB_abundance_raw_data_BARCODING.tsv
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-02-20T190318.471159.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

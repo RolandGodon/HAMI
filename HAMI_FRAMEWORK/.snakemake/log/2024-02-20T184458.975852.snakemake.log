@@ -1,0 +1,37 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job              count
+-------------  -------
+separate_data        1
+total                1
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Tue Feb 20 18:44:59 2024]
+localrule separate_data:
+    input: /home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/DATA/test_data/AgriB03BB_cleaned_abundance.txt
+    output: /home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/DATA/test_data/META/AgriB03BB_abundance_raw_data_METABARCODING.tsv, /home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/DATA/test_data/META/AgriB03BB_Metadata_METABARCODING.csv, /home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/DATA/test_data/BARCODE/AgriB03BB_abundance_raw_data_BARCODING.tsv
+    jobid: 0
+    reason: Missing output files: /home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/DATA/test_data/META/AgriB03BB_abundance_raw_data_METABARCODING.tsv, /home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/DATA/test_data/META/AgriB03BB_Metadata_METABARCODING.csv, /home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/DATA/test_data/BARCODE/AgriB03BB_abundance_raw_data_BARCODING.tsv
+    resources: tmpdir=/tmp
+
+[Tue Feb 20 18:44:59 2024]
+Error in rule separate_data:
+    jobid: 0
+    input: /home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/DATA/test_data/AgriB03BB_cleaned_abundance.txt
+    output: /home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/DATA/test_data/META/AgriB03BB_abundance_raw_data_METABARCODING.tsv, /home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/DATA/test_data/META/AgriB03BB_Metadata_METABARCODING.csv, /home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/DATA/test_data/BARCODE/AgriB03BB_abundance_raw_data_BARCODING.tsv
+    shell:
+        
+        python3 SCRIPTS/Separate_data.py /home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/DATA/test_data/AgriB03BB_cleaned_abundance.txt  /home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/DATA/test_data AgriB03 BB CMEY0  NC 4 A|B
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-02-20T184458.975852.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

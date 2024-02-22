@@ -1,0 +1,8 @@
+Building DAG of jobs...
+InputFunctionException in rule separate_data in file /home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/HAMI/HAMI_PIPELINE.smk, line 6:
+Error:
+  KeyError: 'Samplesprefixe'
+Wildcards:
+
+Traceback:
+  File "/home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/HAMI/HAMI_PIPELINE.smk", line 23, in <lambda> (rule separate_data, line 8, /home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/HAMI/HAMI_PIPELINE.smk)
