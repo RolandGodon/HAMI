@@ -16,11 +16,6 @@ rm(list=ls())# Reset
 ##                 ##
 #####################
 
-## Work on an abundance file, a taxonomic file and a metadata file issued from the script filter_run_frogs.R
-# These files are "project" based (same number of replicates, same kind of data reduction to do, etc).
-# This is advised to run the scripts clean_tax.R and filter_run_frogs.R successively on raw files from Frogs files filtering with filter_project_v2.R.
-
-## Explore covergae, check rarefaction and replicate correlation (figures).
 
 ## Filter data:
 # - filter1: transform abundance data to null under a theshold estimated from alien controls (set with alien_in_samples = yes) or from an input value (set with alien_in_samples = no and rfa).
@@ -29,11 +24,7 @@ rm(list=ls())# Reset
 # - filter3: transform abundance data to null under a theshold estimated from negative controls.
 #   Controls for extraction & pcr contamination following correction 1 from Galan et al. 2016 (Tcc).
 
-## Reduce data (optional):
-# - red1: keep taxa that fit a criterion on sum taxa (set with red1).
-# - red2: keep samples that fit a criterion on sum samples (set with red2).
 
-## Export each filtered abundance table and a summary file with number of seqs and number of clusters.
 
 
 ###################
@@ -55,7 +46,6 @@ rm(list=ls())# Reset
 # - technical replicates of a same biological unit must follow each other.
 # - a column 'project' to subset the metadata file by project
 
-## Search for "to modify" in this script and change values accordingly to your data.
 
 ## Dependencies: packages to install are listed in the file 'Filtering_Functions'.
 
@@ -125,7 +115,6 @@ rm(raw)
 
 
 
-
 ###### CREATE R PRODUCTS DIRECTORY : 
 RPRODUCT<-paste(pathdata,"Rproducts/",sep="")
 if (!file.exists(RPRODUCT)) {
@@ -162,25 +151,7 @@ if (nrep == 2) {ncon = 2} else if (nrep == 3) {ncon = 3} else {stop('nrep should
 ## No setting required for filter3: transform abundance data to null under a theshold : extraction & pcr contamination estimated from negative controls
 # but negative controls must be included in data
 
-## Setting for red1: option for keeping taxa that fit a criterion on sum taxa
-# To inactivate the option, active the following line
-red1 <- "no" # to modify
-# To activate the option, active the following lines
-#red1 <- "yes" # to modify
-# a way is that a minimum number of sequences is required to keep OTU
-# for example min_sum_taxa<-20, to modify later in the script
-# another way is to process as in FROGS: to keep OTU with a minimum proportion of sequences relative to the total of reads
-#min_sum_taxa_rate<-0.00005 #for example, 0.00005 = 0.005% from Escudi? et al. (2018) #to modify, will be multiply by sum(taxa_sums(red2.data)) 
 
-## Setting for red2: option for keeping samples that fit a criterion on sum samples
-# To inactivate the option, active the following line
-red2 <- "no" # to modify
-# To activate the option, active the following lines
-#red2 <- "yes" # to modify
-# a way would be to check rarefaction curves and then pick up a number so that individuals with nb of reads under the stabilization are eliminated
-# for example min_sum_samples<-200, to modify later in the script
-# # another way is to remove extremes: samples with x fold less reads than the average
-#min_sum_samples_rate<-0.01 # to modify, this would be multiply by mean(sample_sums(red2.data))
 
 #########################
 ##                     ##
@@ -333,49 +304,6 @@ write.table(dataframe,file=paste(name,"_tax.filter3.csv",sep=""),sep=";",row.nam
 
 print('End Data Filtering')
 
-#########################
-##                     ##
-##    DATA REDUCTION   ##
-##   On sums or Maxs   ##
-##                     ##
-#########################
-
-## Red1: keep taxa that fit a criterion on sum and update files
-if (red1 == "yes") {
-  r1.data<-f3.data
-  min_sum_taxa<-min_sum_taxa_rate*sum(taxa_sums(r1.data)) # to modify: keep only if min_sum_taxa is not defined directly
-  condition <- function(x) { sum(x) > min_sum_taxa } 
-  taxaToKeep <- filter_taxa(r1.data, condition)
-  r1.data <- prune_taxa(taxaToKeep, r1.data)
-  # update of files for biological samples after red2
-  sort(taxa_sums(r1.data),decreasing = TRUE)
-  write.table(otu_table(r1.data),file=paste(RPRODUCT,name,".abundance.filtered.red1.txt",sep=""),sep="\t")
-  write.table(tax_table(r1.data),file=paste(RPRODUCT,name,".tax.filtered.red1.txt",sep=""),sep="\t")
-}
-
-## Red2: keep samples that fit a criterion on sum and update files
-if (red2 == "yes") {
-  if (red1 == "yes") {r2.data<-r1.data}
-  if (red1 == "no")  {r2.data<-f3.data}
-  min_sum_samples<-min_sum_samples_rate*mean(sample_sums(r2.data)) # to modify: keep only if min_sum_samples is not defined directly
-  samplesToKeep <- (sample_sums(otu_table(r2.data))>min_sum_samples)
-  r2.data <- prune_samples(samplesToKeep, r2.data)
-  # update of files for biological samples after filter 6
-  sort(taxa_sums(r2.data),decreasing = TRUE)
-  write.table(otu_table(r2.data),file=paste(RPRODUCT,name,".abundance.filtered.r2.txt",sep=""),sep="\t")  
-  write.table(tax_table(r2.data),file=paste(RPRODUCT,name,".tax.filtered.r2.txt",sep=""),sep="\t")
-}
-
-## Writing of a final abundance file in proportion
-  if (red2 == "yes") {prop<-r2.data}
-  if (red2 == "no") {
-    if (red1 == "no") {prop<-f3.data}
-    if (red1 == "yes") {prop<-r1.data}
-  }
-count_to_prop <- function(x) { return( x / sum(x) )}
-prop <- transform_sample_counts(prop, count_to_prop)
-sort(taxa_sums(prop),decreasing = TRUE)
-write.table(otu_table(prop),file=paste(RPRODUCT,name,".otu.prop.txt",sep=""),sep="\t")
 
 ###################
 ##               ##
@@ -406,120 +334,6 @@ if (alien_in_samples == "no")  {
   write.table(df,file=paste(RPRODUCT,name,".filters.summary.txt",sep=""),sep="\t")
   cat(paste("Log = file:",name,",rfa_filter1:",rfa,sep="",",number_negatives_filter2:",nsamples(negative.data)),file=paste(RPRODUCT,name,".filters.summary.txt",sep=""),append=TRUE)
 }
-
-## Summary file for data reduction
-  if (red2 == "no") {
-    if (red1 == "yes") {
-      nsamples<-c(nsamples(r1.data))
-      ntaxa<-c(ntaxa(r1.data))
-      nseqs<-c(sum(taxa_sums(r1.data)))
-      df<-data.frame(nsamples, ntaxa, nseqs)
-      rownames(df)<-c("samples.red1")
-      df
-      write.table(df,file=paste(RPRODUCT,name,".reductions.summary.txt",sep=""),sep="\t")
-      cat(paste("Log = file:",name,",percentage_red1:",min_sum_taxa_rate,sep=""),file=paste(RPRODUCT,name,".reductions.summary.txt",sep=""),append=TRUE)
-    }
-  }
-  
-  if (red2 == "yes") {
-    if (red1 == "yes") {
-      nsamples<-c(nsamples(r1.data),nsamples(r2.data))
-      ntaxa<-c(ntaxa(r1.data),ntaxa(r2.data))
-      nseqs<-c(sum(taxa_sums(r1.data)),sum(taxa_sums(r2.data)))
-      df<-data.frame(nsamples, ntaxa, nseqs)
-      rownames(df)<-c("samples.red1","samples.red2")
-      df
-      write.table(df,file=paste(RPRODUCT,name,".reductions.summary.txt",sep=""),sep="\t")
-      cat(paste("Log = file:",name,",percentage_red1:",min_sum_taxa_rate,",percentage_red2:", min_sum_samples_rate,sep=""),file=paste(RPRODUCT,name,".reductions.summary.txt",sep=""),append=TRUE)
-    }
-  }
-  
-  if (red2 == "yes") {
-    if (red1 == "no") {
-      nsamples<-c(nsamples(r2.data))
-      ntaxa<-c(ntaxa(r2.data))
-      nseqs<-c(sum(taxa_sums(r2.data)))
-      df<-data.frame(nsamples, ntaxa, nseqs)
-      rownames(df)<-c("samples.sum.red2")
-      df
-      write.table(df,file=paste(RPRODUCT,name,".reductions.summary.txt",sep=""),sep="\t")
-      cat(paste("Log = file:",name,",percentage_red2:", min_sum_samples_rate,sep=""),file=paste(RPRODUCT,name,".reductions.summary.txt",sep=""),append=TRUE)
-    }
-  }
-
-###################
-##               ##
-##    QUALITY    ##
-##    CHECKS     ##
-##               ##
-###################
-
-## Check quality of replicates
-# computation of R2 on the number of sequences for all OTUs = take a long time...
-datachecks<- f2.data
-rep1<-subset_samples(datachecks, rep %in% c("1"))
-rep2<-subset_samples(datachecks, rep %in% c("2"))
-
-allrep<-matrix(NA,nrow=(ntaxa(datachecks)*0.5*(nsamples(datachecks))),ncol=2)
-for (i in 1:(ntaxa(datachecks))){
-  nreads.rep1<-apply((otu_table(rep1)[i]),1,identity)
-  nreads.rep2<-apply((otu_table(rep2)[i]),1,identity)
-  rep<-cbind(nreads.rep1,nreads.rep2)
-  allrep<-rbind(allrep,rep)
-}
-allrep<-data.frame(allrep)
-names(allrep)<-c("nreads.rep1","nreads.rep2")
-model<-(lm(allrep$nreads.rep1~allrep$nreads.rep2))
-anova(model)
-Rcarre<-anova(model)[1,2]/(anova(model)[1,2]+anova(model)[2,2])
-p<-ggplot(allrep, aes(x=nreads.rep1,y=nreads.rep2))
-p<-p+expand_limits(y=0)+expand_limits(x=0)
-p<-p+ scale_x_log10()+scale_y_log10()
-p<-p + geom_point()
-p<-p + geom_abline(slope=1, intercept=0)
-p<-p+ggtitle(paste("R2 = ",round(Rcarre,3)))
-p
-
-png(filename = paste(RPRODUCT,name, ".nreads_by_replicate.png", sep = ""), width = 6, height = 6, units = "in", res = 600)
-print(p)  
-dev.off()
-
-## Check coverage and saturation
-  if (red2 == "yes") {datachecks<-r2.data}
-  if (red2 == "no") {
-    if (red1 == "no") {datachecks<-f3.data}
-    if (red1 == "yes") {datachecks<-r1.data}
-  }
-
-mean(taxa_sums(datachecks))
-min(taxa_sums(datachecks))
-max(taxa_sums(datachecks))
-sum(taxa_sums(datachecks))
-taxa_nreads = data.frame(nreads = sort(taxa_sums(datachecks), TRUE), sorted = 1:ntaxa(datachecks),type = "Clusters")
-p <- ggplot(taxa_nreads, aes(x = sorted, y = nreads)) + geom_bar(stat = "identity")
-p <- p + scale_y_log10()
-p<-p + labs(x="Clusters",y="Total number of reads")
-p<-p + theme (axis.text=element_text(size=20),axis.title=element_text(size=20))
-p
-png(filename = paste(RPRODUCT,name, ".taxa_nreads.png", sep = ""), width = 12, height = 6, units = "in", res = 600)
-print(p)  
-dev.off()
-
-
-mean(sample_sums(datachecks))
-min(sample_sums(datachecks))
-max(sample_sums(datachecks))
-sum(sample_sums(datachecks))
-coverage = data.frame(nreads = sort(sample_sums(datachecks), TRUE), sorted = 1:nsamples(datachecks), type = "Samples")
-p <- ggplot(coverage, aes(x = sorted, y = nreads)) + geom_bar(stat = "identity")
-p<-p + labs(x="Samples",y="Total number of reads")
-p<-p + theme (axis.text=element_text(size=20),axis.title=element_text(size=20))
-p
-
-png(file = paste(RPRODUCT,name, ".coverage.png", sep = ""), width = 12, height = 6, res = 600)
-print(p)
-dev.off()
-
 
 
 print('End')

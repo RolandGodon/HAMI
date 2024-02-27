@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*-coding: utf-8 -*
 
-
 '''
 
 Author : Benoit Penel
@@ -9,8 +8,14 @@ Date : 28/08/2023
 version : 1.0
 PYTHON3
 
-The aim of this script is to discriminate Metabarcoding, Barcoding and control samples which were sequenced at the same time in a context of HAMI FRAMEWORK.
-In practical, we separate  Metabarcoding, Barcoding and control  data from the occurence file previously produce with frogs, using the sample name nomenclature .
+The script is to discriminate Metabarcoding, Barcoding and control samples which were sequenced at the same time in a context of HAMI FRAMEWORK.
+In practical, it separates  Metabarcoding, Barcoding and control datas from the input file which were - previously produce with frogs- by using the sample name nomenclature .
+Your samples thus need to be discrimated on the basis of their name. Please use alphabectic prefix and number for it e.g : CMEY0001 
+also pipeline is developped to handle duplicate of samples. Discrimination between duplicate will be done using suffix : e.g : CMEY0001A / CMEY0001B
+    
+According to the input file, the script will produce 3 output files : two of them are subset  of input file (Metabarcoding samples and Barcodign samples). The latter is METADATA file associated to metabarcoding datas
+    
+Note : If no barcoding sample, the Barcoding subfile will be empty.
 
 '''
 
@@ -47,26 +52,26 @@ duplicatformule=duplicat.replace("/","|")
 csvfile = open(sys.argv[1])
 Occurencefile = pd.read_csv(csvfile, delimiter="\t", header=0)
 
-colname = list(Occurencefile.columns.values)
+colname = list(Occurencefile.columns.values)#Create an object using column headers 
+
+first=colname[0:11] #Keep the 11th first colum of the dataframe previously produce by FROGS. It contains information about taxonomic affiliations, identity percentages, sequences etc...
 
 
-first=colname[0:11] #KEEP the 11th first colum of the dataframe previously produce by FROGS. It contains information about taxonomic affiliations, identity percentages, sequences etc...
+
+### FILTERING SAMPLES ACCORDING TO THEIR ID_NAME, WHICH INDICATES WHETHER THEY ARE BARCODING, METABARCODING, CONTROL SAMPLES 
 BARCODE = []
 METABARCODE = []
 CONTROL = []
 
-
-### FILTERING SAMPLES ACCORDING TO THEIR ID_NAME, WHICH INDICATES WHETHER THEY ARE BARCODING, METABARCODING, CONTROL SAMPLES 
-
 for i in colname[11:]:   # 11th first colum are already keep in "first" variable
-    if re.search(prefixMETA+ r'[0-9]{'+numberID+'}-('+ duplicatformule + r')', i):
+    if re.search(prefixMETA+ r'[0-9]{'+numberID+'}-('+ duplicatformule + r')', i): #search metabarcoding samples using prefix nomenclature
         METABARCODE.append(i)
-    if re.search(prefixBARC+ r'[0-9]{'+numberID+'}-('+ duplicatformule + r')', i):
+    if re.search(prefixBARC+ r'[0-9]{'+numberID+'}-('+ duplicatformule + r')', i): #search barcoding samples using prefix nomenclature
         BARCODE.append(i)
-    if re.search(prefixCONTROL+r'(I|E|P)', i):
+    if re.search(prefixCONTROL+r'(I|E|P)', i): #search control samples using prefix nomenclature
         CONTROL.append(i)
 
-### PRODUCE SUBSUET OF THE INPUT FILE  :  
+### PRODUCE SUBSET OF THE INPUT FILE  :  
 
 ## METABARCODING
 #Metabarcoding subfile : 
@@ -77,7 +82,7 @@ sum_by_row = METAfile.iloc[:, 11:].sum(axis=1)
 METAfile.loc[:,"observation_sum"]=sum_by_row
 METAfile= METAfile[METAfile["observation_sum"] != 0]
 #Create metabarcoding file : 
-if not os.path.exists(os.path.join(outputdir,"METABARCODING")):#CHECKS WHETHER THE "METABARCODING" DIRECTORY EXISTS IN THE FILE DIRECTORY TREE 
+if not os.path.exists(os.path.join(outputdir,"METABARCODING")):#Checks whether the "Metabarcoding" directory exust in the file directory tree 
     os.makedirs(os.path.join(outputdir,"METABARCODING"))
 METAfile.to_csv(os.path.join(outputdir,"METABARCODING/"+name+fragment+"_abundance_raw_data_METABARCODING.tsv"), index=False,sep="\t")
 
@@ -94,14 +99,15 @@ if len(BARCODE) != 0: #If barcoding data
     BARCOfile = BARCOfile[BARCOfile["observation_sum"]!= 0]
     #Create barcoding file : 
 
-    if not os.path.exists(os.path.join(outputdir,"BARCODE")): #CHECKS WHETHER THE "BARCODING" DIRECTORY EXISTS IN THE FILE DIRECTORY TREE 
+    if not os.path.exists(os.path.join(outputdir,"BARCODE")): #Checks whether the "barcoding" directory exust in the file directory tree 
         os.makedirs(os.path.join(outputdir,"BARCODE"))
     BARCOfile.to_csv(os.path.join(outputdir,"BARCODE/"+name+fragment+"_abundance_raw_data_BARCODING.tsv"), index=False,sep="\t")
+
 else: # If no barcoding data 
-    if not os.path.exists(os.path.join(outputdir,"BARCODE")): #CHECKS WHETHER THE "BARCODING" DIRECTORY EXISTS IN THE FILE DIRECTORY TREE 
+    if not os.path.exists(os.path.join(outputdir,"BARCODE")):  #Checks whether the "barcoding" directory exust in the file directory tree 
         os.makedirs(os.path.join(outputdir,"BARCODE"))
     Null=os.path.join(outputdir,"BARCODE/"+name+fragment+"_abundance_raw_data_BARCODING.tsv")
-    with open(Null, mode='w', newline='') as fichier_tsv:
+    with open(Null, mode='w', newline='') as fichier_tsv: #Create an empty barcoding subfile
         writer = csv.writer(fichier_tsv)
         writer.writerow("NO BARCODING")
 

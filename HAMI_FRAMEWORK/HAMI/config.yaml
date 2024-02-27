@@ -1,7 +1,21 @@
-##################
-#NAME AND FRAGMENT :
+
+
+#This file is a configuration file associated with the snakemake of the HAMI framework (HAMI_PIPELINE.smk).
+#
+#A Snakemake configuration file (config.yaml) is a file written in Python that contains configuration settings for a Snakemake workflow.
+#The configuration file allows users to customize various aspects of the workflow, such as file paths and other workflow-specific settings.
+#
+#Please adapt the configuration file according to our projet by following the example given for the test dataset 
+
+
+#########################################
+#NAME OF PROJECT AND DNA FRAGMENT NAME :
 Name : "AgriB03"
 DNA_fragment : "BB"
+
+#############
+## Threads :
+Threads : 6 # please adapt to your computing power
 
 ##################
 #PATH : 
@@ -17,9 +31,9 @@ Scriptdir :  "/home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/SCRIPTS" #
 
 Samplesprefix:
   Metabarcoding : "CMEY0"
-  Barcoding : "xxxNAxxx" #PUT "xxxNAxxx" if no barcoding data
+  Barcoding : "xxxNAxxx" #Put "xxxNAxxx" if no barcoding data
   Control : "NC" #please Use NCI/NCE or NCP for Index Extraction and PCR Negative Control
-Numberofnumber : 4 # following prefix
+Numberofnumber : 4 # nNmber of digits following prefix
 Samplessuffix: "A/B" #please use A AND B
 
 
@@ -29,7 +43,8 @@ Samplessuffix: "A/B" #please use A AND B
 #With test data, reading frame value is set at 1, according to the target DNA using BF3 + BR2 primer pair
 #(CCHGAYATRGCHTTYCCHCG / TCDGGRTGNCCRAARAAYCA) from Elbrecht et al., 2019 and Elbrecht & Leese, 2017 
 
-Target_group : "Coleoptera" # can either be a phylum, class, order, familly or genus
+Target_group : "Coleoptera" # can either be: Kingdom, Phylum, Class, Order, Family or Genus
 ADN_length : 418 
 Reading_frame: 1 #value should be integer [0,2]. 
 codon_stop : ["TAA","TAG"] # List as many stop codons as necessary depending on the DNA fragment and the targeted phylum
+Threshold : 97 #Usually set at 97%, but can be set higher (max 100) or lower.

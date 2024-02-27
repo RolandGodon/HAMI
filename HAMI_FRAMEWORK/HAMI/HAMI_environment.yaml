@@ -1,4 +1,26 @@
+"""
+This file is a environnement file associated with the snakemake of the HAMI framework (HAMI_PIPELINE.smk).
+
+
+A Snakemake environment file is a file that specifies the software dependencies required for running a Snakemake workflow. 
+It typically contains a list of software packages along with their versions, which are necessary for executing the various steps
+or rules defined in the workflow. The environment file ensures reproducibility by providing a consistent software environment for 
+running the workflow across different computing environments.
+
+Please used this environement file to create a conda environement adapted to run HAMI framework (HAMI_PIPELINE.smk).
+
+Do it as follow : 
+conda env create -f HAMI_environment.yaml  --name HAMI_environment
+
+Then activate it:
+conda activate HAMI_environment
+
+
+"""
+
+
 name: HAMI
+
 channels:
   - bioconda
   - conda-forge
@@ -191,4 +213,6 @@ dependencies:
   - yte=1.5.4=pyha770c72_0
   - zipp=3.17.0=pyhd8ed1ab_0
   - zstd=1.5.5=hfc55251_0
-prefix: /home/penelben/mambaforge/envs/HAMI
+
+
+

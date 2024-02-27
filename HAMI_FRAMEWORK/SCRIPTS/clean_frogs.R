@@ -21,9 +21,8 @@ rm(list=ls())# Reset
 ## Correct the taxonomy of each cluster of the abundance tsv file tagged 'multi-affiliation', from decision rules applied on the cleaned multihits tsv file:
 
 # Clean the taxonomy (7 ranks: Kingdom,Phylum,Class,Order,Family,Genus,Species) of each hit of the two files for:
-# - the special characters '[]()_"0123456789.' in all 7 taxonomic ranks.
-# - 'mitochondria' (in the Family rank) and 'chloroplast' (in the Class rank), which are replaced by plantae in all 7 taxonomic ranks.
-# - 'unidentified', 'sp.' and 'bacterium', which are replaced by 'unknown species' in the Species rank .
+# - the special characters in all 7 taxonomic ranks.
+# - 'unidentified', and 'sp.'  which are replaced by 'unknown species' in the Species rank .
 # - unexpected number of words in all 7 taxonomic ranks.
 # - for the species and genus ranks only: if the number of 'unknown species' hits < % threshold then ignore them.
 # - for all taxonomic ranks: 
@@ -61,18 +60,26 @@ pathdata<-args[1] # data directory
 setwd(pathdata) 
 
 
-multi_namefile<-args[2] #path to multihits tsv file
-abundance_namefile<-args[3] #path to abundance file
+multi_namefile<-args[2] #path to multihits csv file
+abundance_namefile<-args[3] #path to abundance csv file
 
 name<-args[4] #name of the project, it will be used to import files and write names before extension of the different output tables.
 fragment<-args[5] # name of the DNA fragment sequenced,  it will be used to import files and write names before extension of the different output tables.
+threads<-args[6] #threads used for chimera deletion
 
-mt<-fread(multi_namefile,sep=";",header=TRUE) #name of the multihits file
+mt<-fread(multi_namefile,sep=";",header=TRUE) #open multihits file
 mh <- data.table(bidouille=mt$blast_taxonomy, blast_taxonomy=mt$blast_taxonomy, observation_name=mt$`#observation_name`)
 rm(mt)
 
-at<-fread(abundance_namefile,sep=";",header=TRUE)# name of the abundance file
+at<-fread(abundance_namefile,sep=";",header=TRUE)# open the abundance file
 ab <- data.table(bidouille=at$`blast_taxonomy`, blast_taxonomy=at$`blast_taxonomy`, observation_name=at$observation_name)
+
+
+###### CREATE CHIMERAS DIRECTORY : 
+RPRODUCT<-paste(pathdata,"/chimeras/",sep="")
+if (!file.exists(RPRODUCT)) {
+  # Create the directory if it does not exist
+  dir.create(RPRODUCT, recursive = TRUE)}
 
 ###################
 ##               ##
@@ -95,7 +102,7 @@ rm(toto)
 
 
 
-## Replacement in the species field of 'unidentified' or 'metagenome' anywhere in the field by 'unknown species' 
+## Replacement in the species field of 'unidentified' anywhere in the field by 'unknown species' 
 ## Replacement in the species field of 'sp' and 'sp.' at the end of the field by 'unknown species'
 ## Replacement in the species field pattern similar to 'Genus_xx._specie' by  'unknown species'
 ## Replacement of the species field by 'unknown species' if empty
@@ -114,7 +121,7 @@ mh$tx7<-gsub("-GLA$","",mh$tx7)
 mh$tx7<-gsub("_L.$","",mh$tx7)
 mh$tx7<-gsub("_CHU$","",mh$tx7)
 
-### Cette ligne permet de trouver les pattern a nettoyer en unknown species
+### This line allow to found other wrong pattern that should be add to the previous list 
 # erreur=mh[!grepl("^[A-Z][a-z]+_[a-z\\-]+$", mh$tx7) & !(mh$tx7=="unknown species"),]
 
 
@@ -196,7 +203,7 @@ rm(toto)
 
 
 
-## Replacement in the species field of 'unidentified' or 'metagenome' anywhere in the field by 'unknown species' 
+## Replacement in the species field of 'unidentified'  anywhere in the field by 'unknown species' 
 ## Replacement in the species field of 'sp' and 'sp.' at the end of the field by 'unknown species'
 ## Replacement in the species field pattern similar to 'Genus_xx._specie' by  'unknown species'
 ## Replacement of the species field by 'unknown species' if empty
@@ -258,15 +265,15 @@ rownames(fordada.m) <- fordada$seed_sequence
 fordada.t <- t(fordada.m)
 
 ##
-bimeras.v <- isBimeraDenovo(getUniques(fordada.t), minFoldParentOverAbundance=4, verbose=TRUE, multithread = T)
+bimeras.v <- isBimeraDenovo(getUniques(fordada.t), minFoldParentOverAbundance=4, verbose=TRUE, multithread = threads)
 bimeras.df <- data.frame(x=as.logical(bimeras.v), seq=names(bimeras.v))
 write.table(fordada[bimeras.df$x==FALSE,], file = paste(name,fragment,"_cleaned_abundance.txt",sep=""), sep="\t",row.names=FALSE,col.names=TRUE,quote=FALSE)#writing of filtered abundance table (without identified chimeras)
-write.table(fordada[bimeras.df$x==TRUE,], file = paste(name,fragment,"_chimeras_list.txt",sep=""), sep="\t",row.names=FALSE,col.names=TRUE,quote=FALSE)#downloading of identified chimeras
+write.table(fordada[bimeras.df$x==TRUE,], file = paste(RPRODUCT,name,fragment,"_chimeras_list.txt",sep=""), sep="\t",row.names=FALSE,col.names=TRUE,quote=FALSE)#downloading of identified chimeras
 
 ## Summary file
 number_of_total_clusters = nrow(fordada)
 number_of_bimeras = nrow(fordada[bimeras.df$x==TRUE,])
 number_of_nobimeras = nrow(fordada[bimeras.df$x==FALSE,])
 summary.df = data.frame(number_of_total_clusters, number_of_bimeras, number_of_nobimeras)
-write.table(summary.df,file=paste(name,fragment,"_chimeras_summary.txt",sep=""),sep="\t",row.names=FALSE,col.names=TRUE,quote=FALSE)
+write.table(summary.df,file=paste(RPRODUCT,name,fragment,"_chimeras_summary.txt",sep=""),sep="\t",row.names=FALSE,col.names=TRUE,quote=FALSE)
 
