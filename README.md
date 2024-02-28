@@ -34,6 +34,36 @@ There are five successive rules:
 
   <br />
 
+
+## Installation
+
+### Requirements
+
+Before installation, the following packages should be available on your system must be installed on your system:
+
+* Python >=3.0
+* Miniconda3. Please choose the installer corresponding to your OS: [Miniconda dowloads](https://docs.conda.io/en/latest/miniconda.html)
+* GIT
+
+
+Below are debian commands to rapidly install them:
+```
+sudo apt-get install git
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+chmod u+x Miniconda3-latest-Linux-x86_64.sh
+./Miniconda3-latest-Linux-x86_64.sh
+# when installation ask if you want to run conda init, answer yes
+# after installation ends, reload bash so that conda belongs to your PATH
+bash 
+```
+
+### Installation
+
+Download HAMI:
+``` bash
+
+```
+
 ## Setup your environment
 
 A Snakemake environment file is a file that specifies the software dependencies required for running a Snakemake workflow. It typically contains a list of software packages along with their versions, which are necessary for executing the various steps or rules defined in the workflow. The environment file ensures reproducibility by providing a consistent software environment for 
@@ -66,7 +96,23 @@ Here is the list of specific setting which are necessary for running HAMI pipeli
 -Arbitrary threshold to discriminated intra-interspecific genetic distance  (usually 97% for animals according to Hebert et al 2003 - Proceedings of the Royal Society of London)
 
 
+Note that for running HAMI pipeline in contexte of HAMI framework, your samples need to be discrimated based on their name. Please use alphabectic prefix and number for it e.g : CMEY0001. Also Duplicate of samples is necessary. Discrimination between duplicate will be done using suffix : e.g : CMEY0001A / CMEY0001B. Information allowing discrimination between samples will thus be implemented in the config file !
 
+- Samples prefix for metabarcoding samples, barcoding (if implemented), and negative control
+- Number of digits following the prefix
+- Samples suffix for discriminate duplicate
+
+
+
+
+
+You can launch a dry-run, if no error is throwed, PEWO is correctly installed:
+``` bash
+snakemake -np \
+--snakefile eval_accuracy.smk \
+--config workdir=`pwd`/examples/1_fast_test_of_accuracy_procedure/run \
+--configfile examples/1_fast_test_of_accuracy_procedure/config.yaml
+```
 
 
 
