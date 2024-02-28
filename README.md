@@ -13,9 +13,9 @@
 
 ## Description  
 
-Snakemake is a workflow management system written in Python. It facilitates the creation and execution of complex data analysis pipelines, particularly in bioinformatics and computational biology. It is associated to a config.yaml file as well as a environment.yaml file. Please check snakemake Tutorial for futher explications (https://snakemake.readthedocs.io/en/stable/tutorial/tutorial.html)
+Snakemake is a workflow management system written in Python. It facilitates the creation and execution of complex data analysis pipelines, particularly in bioinformatics and computational biology. It is associated to a config.yaml file as well as a environment.yaml file. Please check snakemake Tutorial for futher explications: [Snakemake tutorials](https://snakemake.readthedocs.io/en/stable/tutorial/tutorial.html)
 
-Here HAMI_PIPELINE.smk is a snakemake workflow associated to HAMI framework. It is associateds to config.yaml file and HAMI_environement.yaml file.
+Here HAMI_PIPELINE.smk is a snakemake workflow associated to HAMI framework. It is associateds to config.yaml file and HAMI_environment.yaml file.
 Please check all these files to understand how it works.
 
 
@@ -34,9 +34,7 @@ There are five successive rules:
 
   <br />
 
-
 ## Installation
-
 ### Requirements
 
 Before installation, the following packages should be available on your system must be installed on your system:
@@ -66,8 +64,7 @@ Download HAMI:
 
 ## Setup your environment
 
-A Snakemake environment file is a file that specifies the software dependencies required for running a Snakemake workflow. It typically contains a list of software packages along with their versions, which are necessary for executing the various steps or rules defined in the workflow. The environment file ensures reproducibility by providing a consistent software environment for 
-running the workflow across different computing environments. Please used this environement file to create a conda environement adapted to run HAMI framework (HAMI_PIPELINE.smk).
+A Snakemake environment file is a file that specifies the software dependencies required for running a Snakemake workflow. It typically contains a list of software packages along with their versions, which are necessary for executing the various steps or rules defined in the workflow. The environment file ensures reproducibility by providing a consistent software environment for running the workflow across different computing environments. Please used this environement file to create a conda environement adapted to run HAMI framework (HAMI_PIPELINE.smk).
 <br />
 Do it as follow : 
 conda env create -f HAMI_environment.yaml  --name HAMI_environment
@@ -84,36 +81,41 @@ A Snakemake configuration file (config.yaml) is a file written in Python that co
 
 Here is the list of specific setting which are necessary for running HAMI pipeline:
 
--Name of projet
--Name of the DNA fragment 
--Number of treads used to run some internal process
--Path to your directory project, as well as data directory and script directory
+- Name of projet
+- Name of the DNA fragment 
+- Number of treads used to run some internal process
+- Path to your directory project, as well as data directory and script directory
 
--Target taxonomic group
--ADN length
--Reading frame of the DNA (Check it before running the pipeline)
--List of the codon stop associated to your type of DNA and organisms
--Arbitrary threshold to discriminated intra-interspecific genetic distance  (usually 97% for animals according to Hebert et al 2003 - Proceedings of the Royal Society of London)
+- Target taxonomic group
+- ADN length
+- Reading frame of the DNA (Check it before running the pipeline)
+- List of the codon stop associated to your type of DNA and organisms
+- Arbitrary threshold to discriminated intra-interspecific genetic distance  (usually 97% for animals according to Hebert et al 2003 - Proceedings of the Royal Society of London)
 
 
-Note that for running HAMI pipeline in contexte of HAMI framework, your samples need to be discrimated based on their name. Please use alphabectic prefix and number for it e.g : CMEY0001. Also Duplicate of samples is necessary. Discrimination between duplicate will be done using suffix : e.g : CMEY0001A / CMEY0001B. Information allowing discrimination between samples will thus be implemented in the config file !
+Note that for running HAMI pipeline in contexte of HAMI framework, your samples need to be discrimated based on their name. Please use alphabectic prefix and number for it e.g : CMEY0001. Also cuplicate of samples is necessary. Discrimination between duplicate will be done using suffix : e.g CMEY0001A / CMEY0001B. Information allowing discrimination between samples will thus be implemented in the config file!
 
 - Samples prefix for metabarcoding samples, barcoding (if implemented), and negative control
 - Number of digits following the prefix
-- Samples suffix for discriminate duplicate
+- Samples suffix for discriminating duplicate
 
 
+## Test and run your pipeline
 
+It is strongly recommended to test if your configuration is valid and matches the analyses you intended. To do so, launch a dry run of the pipeline using the command:
 
-
-You can launch a dry-run, if no error is throwed, PEWO is correctly installed:
 ``` bash
-snakemake -np \
---snakefile eval_accuracy.smk \
---config workdir=`pwd`/examples/1_fast_test_of_accuracy_procedure/run \
---configfile examples/1_fast_test_of_accuracy_procedure/config.yaml
+snakemake --snakefile [snakefile].smk -np
+```
+If no error is throwed, you can lauch the analysis :
+
+``` bash
+snakemake --cores [#cores]  --snakefile [snakefile].smk
 ```
 
+## Contact
+*Benoit Penel*
+PhD student from CBGP laboratory, Montpellier, France.
 
-
-snakemake --cores 1  -s HAMI/HAMI_PIPELINE.smk   
+## Licence
+HAMI is availale under the XXXXX license
