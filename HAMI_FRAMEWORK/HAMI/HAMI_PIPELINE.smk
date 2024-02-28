@@ -6,7 +6,7 @@ as well as a environment.yaml file. Please check snakemake Tutorial for futher e
 (https://snakemake.readthedocs.io/en/stable/tutorial/tutorial.html)
 
 Here HAMI_PIPELINE.smk is a snakemake workflow associated to HAMI framework. It is associateds to config.yaml file and HAMI_environement.yaml file.
-Please check all these file to understand how it works.
+Please check all these files to understand how it works.
 
 
 The role of this snakemake pipeline is to process the sequencing data at the output of the FROGS pipeline as part of the HAMI framework.

@@ -26,7 +26,7 @@ Scriptdir :  "/home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/SCRIPTS" #
 
 ################################
 #Information about samples name : 
-#Your samples need to be discrimated on the basis of their name. Use alphabectic prefix and number for it e.g : CMEY0001 
+#Your samples need to be discrimated based on their name. Use alphabectic prefix and number for it e.g : CMEY0001 
 #Duplicate of samples is also necessary. Discrimination between duplicate will be done using suffix : e.g : CMEY0001A / CMEY0001B
 
 Samplesprefix:
