@@ -110,7 +110,7 @@ snakemake --snakefile [snakefile].smk -np
 If no error is throwed, you can lauch the analysis :
 
 ``` bash
-snakemake --cores [#cores]  --snakefile [snakefile].smk
+snakemake --snakefile [snakefile].smk --cores [#cores]
 ```
 
 ## Contact
