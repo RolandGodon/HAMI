@@ -64,12 +64,13 @@ METABARCODE = []
 CONTROL = []
 
 for i in colname[11:]:   # 11th first colum are already keep in "first" variable
-    if re.search(prefixMETA+ r'[0-9]{'+numberID+'}-('+ duplicatformule + r')', i): #search metabarcoding samples using prefix nomenclature
-        METABARCODE.append(i)
-    if re.search(prefixBARC+ r'[0-9]{'+numberID+'}-('+ duplicatformule + r')', i): #search barcoding samples using prefix nomenclature
+    if re.search(prefixBARC, i): #search barcoding samples using prefix nomenclature 
         BARCODE.append(i)
-    if re.search(prefixCONTROL+r'(I|E|P)', i): #search control samples using prefix nomenclature
-        CONTROL.append(i)
+    else : 
+        if re.search(prefixMETA, i): #search metabarcoding samples using prefix nomenclature
+            METABARCODE.append(i)
+        if re.search(prefixCONTROL+r'(I|E|P)', i): #search control samples using prefix nomenclature
+            CONTROL.append(i)
 
 ### PRODUCE SUBSET OF THE INPUT FILE  :  
 

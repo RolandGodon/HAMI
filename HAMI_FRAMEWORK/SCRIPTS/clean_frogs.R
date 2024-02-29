@@ -48,6 +48,7 @@ suppressPackageStartupMessages(library(tidyr))
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(dada2)) # BioConductor
 
+
 ###################
 ##               ##
 ##  DATA IMPORT  ##
@@ -265,7 +266,8 @@ rownames(fordada.m) <- fordada$seed_sequence
 fordada.t <- t(fordada.m)
 
 ##
-bimeras.v <- isBimeraDenovo(getUniques(fordada.t), minFoldParentOverAbundance=4, verbose=TRUE, multithread = threads)
+options(mc.cores = threads)
+bimeras.v <- isBimeraDenovo(getUniques(fordada.t), minFoldParentOverAbundance=4, verbose=TRUE, multithread = TRUE)
 bimeras.df <- data.frame(x=as.logical(bimeras.v), seq=names(bimeras.v))
 write.table(fordada[bimeras.df$x==FALSE,], file = paste(name,fragment,"_cleaned_abundance.txt",sep=""), sep="\t",row.names=FALSE,col.names=TRUE,quote=FALSE)#writing of filtered abundance table (without identified chimeras)
 write.table(fordada[bimeras.df$x==TRUE,], file = paste(RPRODUCT,name,fragment,"_chimeras_list.txt",sep=""), sep="\t",row.names=FALSE,col.names=TRUE,quote=FALSE)#downloading of identified chimeras

@@ -10,17 +10,17 @@
 
 #########################################
 #NAME OF PROJECT AND DNA FRAGMENT NAME :
-Name : "AgriB03"
+Name : "AGRIB04"
 DNA_fragment : "BB"
 
 #############
 ## Threads :
-Threads : 6 # please adapt to your computing power
+Threads : 9 # please adapt to your computing power
 
 ##################
 #PATH : 
 workdir : "/home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK" #General path of the projet
-datadir: "/home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/DATA/test_data" #Path to data
+datadir: "/home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/DATA/test_AgriB04" #Path to data
 Scriptdir :  "/home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/SCRIPTS" #Path to scripts 
 
 
@@ -31,7 +31,7 @@ Scriptdir :  "/home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/SCRIPTS" #
 
 Samplesprefix:
   Metabarcoding : "CMEY0"
-  Barcoding : "xxxNAxxx" #Put "xxxNAxxx" if no barcoding data
+  Barcoding : "JHAR-CMEY0" #Put "xxxNAxxx" if no barcoding data
   Control : "NC" #please Use NCI/NCE or NCP for Index Extraction and PCR Negative Control
 Numberofnumber : 4 # nNmber of digits following prefix
 Samplessuffix: "A/B" #please use A AND B

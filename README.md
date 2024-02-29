@@ -93,7 +93,9 @@ Here is the list of specific setting which are necessary for running HAMI pipeli
 - Arbitrary threshold to discriminated intra-interspecific genetic distance  (usually 97% for animals according to Hebert et al 2003 - Proceedings of the Royal Society of London)
 
 
-Note that for running HAMI pipeline in contexte of HAMI framework, your samples need to be discrimated based on their name. Please use alphabectic prefix and number for it e.g : CMEY0001. Also cuplicate of samples is necessary. Discrimination between duplicate will be done using suffix : e.g CMEY0001A / CMEY0001B. Information allowing discrimination between samples will thus be implemented in the config file!
+**Note** that for running HAMI pipeline in contexte of HAMI framework, your samples need to be discrimated based on their name. Please use alphabectic prefix  for it e.g : 
+Metabarcoding samples = CMEY0001 While Barcoding sample = JHAR0001. 
+Also duplicate metabarcoding samples are necessary. Discrimination between duplicate will be done using suffix : e.g CMEY0001-A / CMEY0001-B. Information allowing discrimination between samples will thus be implemented in the config file!
 
 - Samples prefix for metabarcoding samples, barcoding (if implemented), and negative control
 - Number of digits following the prefix
