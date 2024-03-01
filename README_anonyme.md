@@ -14,29 +14,51 @@
 
 ### Tree structure :
 
-├── HAMI_FRAMEWORK                                        
-│   ├── DATA
-│   │   └── test_data                                #TEST DATA TO TEST HAMI PIPELINE
-│   │       ├── AgriB03BB_abundance_raw.csv              
-│   │       └── AgriB03BB_multi-affiliations.csv
-│   ├── HAMI                                         #SNAKEMAKE FILES ASSOCIATED TO HAMI PIPELINE
-│   │   ├── config.yaml                              #CONFIG FILE TO CONFIG YOUT PROJET (set to run test data)
-│   │   ├── HAMI_environment.yaml                    #ENVIRONMENT FILE TO CREATE AN ADAPTED ENVIRONMENT TO RUN HAMI PIPELIN
-│   │   └── HAMI_PIPELINE.smk                        #HAMI PIPELINE
-│   └── SCRIPTS                                        
-│       │                                            #SCRIPTS CALLED BY HAMI PIPELINE ARE STORE
-│       ├── clean_frogs.R                             
-│       ├── filter_frogs.R
-│       ├── Merge_after_filtre.py
-│       ├── pseudogene_and_redudancy.py
-│       ├── Separate_data.py
-│       │
-│       ├── BARCODE_MAKER.py                         #ADDITIONAL SCRIPTS CALL NOT USED IN HAMI PIPELINE ARE BUT ASSOCIATED TO OPTIONAL STEP OF HAMI FRAMEWORK
-│       └── BARCODE_pseudogene_filter.py             #DELETE PSEUDOGENE SEQUENCES AND PRODUCE A FULL COI BARCODE
-│ 
-└── README.md
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <ul>
+        <li><strong>HAMI_FRAMEWORK</strong>
+            <ul>
+                <li><strong>DATA</strong>  
+                    <ul>
+                        <li>test_data 
+                            <ul>
+                                <li>AgriB03BB_abundance_raw.csv</li>
+                                <li>AgriB03BB_multi-affiliations.csv</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><strong>HAMI</strong> 
+                    <ul>
+                        <li>config.yaml</li>  
+                        <li>HAMI_environment.yaml</li>  
+                        <li>HAMI_PIPELINE.smk</li>   
+                    </ul>
+                </li>
+                <li><strong>SCRIPTS</strong> 
+                    <ul>
+                        <li>clean_frogs.R</li>  
+                        <li>filter_frogs.R</li>  
+                        <li>pseudogene_and_redudancy.py</li>  
+                        <li>Separate_data.py</li>  
+                        <li>BARCODE_MAKER.py</li> 
+                        <li>BARCODE_pseudogene_filter.py</li> 
+                    </ul>
+                </li>
+              <li>ReadME.md</li>
+            </ul>
+        </li>
+    </ul>
+</body>
+</html>
 
-5 directories, 13 files
+5 directories, 12 files
 
 ### Description :                   
 
