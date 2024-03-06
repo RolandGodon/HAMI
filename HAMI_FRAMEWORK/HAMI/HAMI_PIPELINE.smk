@@ -16,7 +16,7 @@ There are five successive rules:
 
 - Clean_and_Chimeres :  R process for removing chimeric sequences using dada2 packages (Callahan et al., 2016 - Nature Methods)
 
-- Separate_BARCODIN_METABARCODING_data : Python process to discriminate between metabarcoding and barcoding samples
+- Separate_BARCODING_METABARCODING_data : Python process to discriminate between metabarcoding and barcoding samples
 
 - Filter_METABARCODING_DATA: R process to filter data and eliminate noise and contamination (3 filter steps)
 
@@ -79,7 +79,7 @@ rule Clean_and_Chimeres:
         Rscript SCRIPTS/clean_frogs.R {params.path} {input.multi_data} {input.abundance_data} {params.name} {params.fragment} {params.threads}
         """
 
-rule Separate_BARCODIN_METABARCODING_data:
+rule Separate_BARCODING_METABARCODING_data:
     """
     The aim of this rule is to discriminate Metabarcoding, Barcoding and control samples which were sequenced at the same time in a context of HAMI FRAMEWORK.
     In practical, it separates  Metabarcoding, Barcoding and control datas from the input file which were - previously produce with frogs- by using the sample name nomenclature .

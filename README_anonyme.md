@@ -65,7 +65,7 @@
 Snakemake is a workflow management system written in Python. It facilitates the creation and execution of complex data analysis pipelines, particularly in bioinformatics and computational biology. It is associated to a config.yaml file as well as a environment.yaml file. Please check snakemake Tutorial for futher explications: [Snakemake tutorials](https://snakemake.readthedocs.io/en/stable/tutorial/tutorial.html)
 
 Here HAMI_PIPELINE.smk is a snakemake workflow associated to HAMI framework. It is associateds to a config file (config.yaml) and an environement file (HAMI_environment.yaml).
-Please check all these files to understand how it works.
+Please check these files to understand how it works.
 
 
 The role of this snakemake pipeline is to process the sequencing data at the output of the FROGS pipeline as part of the HAMI framework.
@@ -75,7 +75,7 @@ To do this, there are five successive rules:
 
 - Clean_and_Chimeres : R process for removing chimeric sequences using dada2 packages (Callahan et al., 2016 - Nature Methods)
 
-- Separate_BARCODIN_METABARCODING_data : Python process to discriminate between metabarcoding and barcoding samples
+- Separate_BARCODING_METABARCODING_data : Python process to discriminate between metabarcoding and barcoding samples
 
 - Filter_METABARCODING_DATA: R process to filter data and eliminate noise and contamination (3 filter steps)
 
@@ -101,27 +101,40 @@ sudo apt-get install git
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 chmod u+x Miniconda3-latest-Linux-x86_64.sh
 ./Miniconda3-latest-Linux-x86_64.sh
-# when installation ask if you want to run conda init, answer yes
-# after installation ends, reload bash so that conda belongs to your PATH
+```
+When installation ask if you want to run conda init, answer yes
+After installation ends, reload bash
+```
 bash 
 ```
 
 ### Installation
+First of all, create a directory that corresponds to your project directory.
 
 Download HAMI:
 ``` bash
-
+git clone --recursive https://github.com/AUTHOR_REPOSITORY/HAMI.git
+cd HAMI
 ```
+When the git clone is finished, you should find a tree structure similar to the one shown at the beginning of this file.
+To ensure the functionality of the HAMIE pipeline, no changes should be made to the tree structure.
+Simply import the data that you wish to process in relation to your project into the /HAMI_FRAMEWORK/DATA/ directory.
+As a reminder, this pipeline processes the output data from FROGS pipeline. 
+
 
 ## Setup your environment
 
 A Snakemake environment file is a file that specifies the software dependencies required for running a Snakemake workflow. It typically contains a list of software packages along with their versions, which are necessary for executing the various steps or rules defined in the workflow. The environment file ensures reproducibility by providing a consistent software environment for running the workflow across different computing environments. Please used this environement file to create a conda environement adapted to run HAMI framework (HAMI_PIPELINE.smk).
 <br />
 Do it as follow : 
+``` bash
 conda env create -f HAMI_environment.yaml  --name HAMI_environment
+``` 
 <br />
 Then activate it:
+``` bash
 conda activate HAMI_environment
+```
 <br />
 
 ## Setup your config file
