@@ -1,0 +1,2 @@
+number_of_total_clusters	number_of_bimeras	number_of_nobimeras
+732	118	614

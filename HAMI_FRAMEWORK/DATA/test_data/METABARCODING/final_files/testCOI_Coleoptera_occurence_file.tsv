@@ -1,0 +1,24 @@
+Taxon_name	Nbr_cluster	multi	max_identity	min_identity	Observation	METABAR01174	METABAR01175	METABAR01176	
+Arthropoda;Insecta;Coleoptera;Nitidulidae;Meligethinae;Brassicogethes;Brassicogethes_aeneus	3	0	100.0	99.043	3130	3130	0	0
+Arthropoda;Insecta;Coleoptera;Curculionidae;Entiminae;Sitona;Sitona_lineatus	4	0	100.0	98.082	10668	10625	43	0
+Arthropoda;Insecta;Coleoptera;Oedemeridae;Oedemerinae;Oedemera;Oedemera_lurida	10	0	100.0	98.086	5860	5839	21	0
+Arthropoda;Insecta;Coleoptera;Coccinellidae;Coccinellinae;Hippodamia;Hippodamia_variegata	2	0	100.0	98.565	1624	0	0	1624
+Arthropoda;Insecta;Coleoptera;Oedemeridae;Oedemerinae;Oedemera;unknown species	2	0	100.0	99.282	5846	5846	0	0
+Arthropoda;Insecta;Coleoptera;Melyridae;Malachiinae;Cordylepherus;Cordylepherus_viridis	2	0	99.522	99.043	1134	1134	0	0
+Arthropoda;Insecta;Coleoptera;Curculionidae;Ceutorhynchinae;Ceutorhynchus;Ceutorhynchus_pallidactylus	4	0	100.0	97.608	1422	0	0	1422
+Arthropoda;Insecta;Coleoptera;Chrysomelidae;Galerucinae;Longitarsus;Longitarsus_melanocephalus	10	0	100.0	98.086	9176	9124	52	0
+Arthropoda;Insecta;Coleoptera;Curculionidae;Ceutorhynchinae;Ceutorhynchus;Ceutorhynchus_obstrictus	1	0	100.0	100.0	380	380	0	0
+Arthropoda;Insecta;Coleoptera;Phalacridae;Phalacrinae;Olibrus;Olibrus_liquidus	3	0	100.0	99.043	21326	260	21066	0
+Arthropoda;Insecta;Coleoptera;Chrysomelidae;Bruchinae;Bruchidius;Bruchidius_cinerascens	7	0	99.522	97.368	14131	0	0	14131
+Arthropoda;Insecta;Coleoptera;Chrysomelidae;Cryptocephalinae;Labidostomis;Labidostomis_longimana	3	0	99.761	98.337	3987	0	0	3987
+Arthropoda;Insecta;Coleoptera;Brentidae;Apioninae;Protapion;Protapion_trifolii	4	0	99.761	98.804	6372	0	6372	0
+Arthropoda;Insecta;Coleoptera;Staphylinidae;Staphylininae;Heterothops;unknown species	2	0	96.651	95.455	1612	0	0	1612
+Arthropoda;Insecta;Coleoptera;Brentidae;Apioninae;Protapion;Protapion_fulvipes	1	0	100.0	100.0	110	110	0	0
+Arthropoda;Insecta;Coleoptera;Curculionidae;Curculioninae;Multi-affiliation;Multi-affiliation	3	0	92.823	91.866	1608	1608	0	0
+Arthropoda;Insecta;Coleoptera;Phalacridae;Phalacrinae;Olibrus;Multi-affiliation	1	0	99.761	99.761	2316	0	0	2316
+Arthropoda;Insecta;Coleoptera;Chrysomelidae;Bruchinae;Bruchidius;Bruchidius_varius	2	0	100.0	98.072	204	204	0	0
+Arthropoda;Insecta;Coleoptera;Chrysomelidae;Galerucinae;Longitarsus;Longitarsus_succineus	1	0	98.565	98.565	169	0	0	169
+Arthropoda;Insecta;Coleoptera;Chrysomelidae;Cryptocephalinae;Labidostomis;Labidostomis_humeralis	1	0	88.038	88.038	87	0	0	87
+Arthropoda;Insecta;Coleoptera;Phalacridae;Phalacrinae;Olibrus;Olibrus_millefolii	1	0	100.0	100.0	157	0	0	157
+Arthropoda;Insecta;Coleoptera;Chrysomelidae;Galerucinae;Longitarsus;Longitarsus_melanocephalus	4	0	96.651	94.019	101	101	0	0
+Arthropoda;Insecta;Coleoptera;Curculionidae;Entiminae;Sitona;Sitona_lineatus	1	0	96.875	96.875	8	8	0	0

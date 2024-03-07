@@ -11,7 +11,7 @@
 #########################################
 #NAME OF PROJECT AND DNA FRAGMENT NAME :
 Name : "test"
-DNA_fragment : "BB"
+DNA_fragment : "COI"
 
 #############
 ## Threads :
@@ -19,9 +19,9 @@ Threads : 9 # please adapt to your computing power
 
 ##################
 #PATH : 
-workdir : "/home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK" #General path of the projet
-datadir: "/home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/DATA/test_data" #Path to data
-Scriptdir :  "/home/penelben/Documents/THESE/1st_paper/HAMI_FRAMEWORK/SCRIPTS" #Path to scripts 
+workdir : "/home/penelben/Documents/GitHub/HAMI/HAMI_FRAMEWORK" #General path of the projet
+datadir: "/home/penelben/Documents/GitHub/HAMI/HAMI_FRAMEWORK/DATA/test_data" #Path to data
+Scriptdir :  "/home/penelben/Documents/GitHub/HAMI/HAMI_FRAMEWORK/SCRIPTS" #Path to scripts 
 
 
 ################################
@@ -33,7 +33,6 @@ Samplesprefix:
   Metabarcoding : "METABAR"
   Barcoding : "BARC" #Put "xxxNAxxx" if no barcoding data
   Control : "NC" #please Use NCI/NCE or NCP for Index Extraction and PCR Negative Control
-Numberofnumber : 4 # nNmber of digits following prefix
 Samplessuffix: "A/B" #please use A AND B
 
 

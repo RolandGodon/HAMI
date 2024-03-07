@@ -110,12 +110,11 @@ rule Separate_BARCODING_METABARCODING_data:
         prefixMETA = lambda wilcards : config["Samplesprefix"]["Metabarcoding"],
         prefixBARC = lambda wilcards : config["Samplesprefix"]["Barcoding"],
         prefixCONTROL = lambda wilcards : config["Samplesprefix"]["Control"],
-        numberID = lambda wilcards : config["Numberofnumber"],
         duplicat = lambda wilcards : config["Samplessuffix"]
     
     shell:
         """
-        python3 SCRIPTS/Separate_data.py {input.cleaned_abundance}  {params.path} {params.name} {params.fragment} {params.prefixMETA} {params.prefixBARC} {params.prefixCONTROL} {params.numberID} {params.duplicat}
+        python3 SCRIPTS/Separate_data.py {input.cleaned_abundance}  {params.path} {params.name} {params.fragment} {params.prefixMETA} {params.prefixBARC} {params.prefixCONTROL} {params.duplicat}
         """
         
 

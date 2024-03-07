@@ -102,7 +102,8 @@ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 chmod u+x Miniconda3-latest-Linux-x86_64.sh
 ./Miniconda3-latest-Linux-x86_64.sh
 ```
-When installation ask if you want to run conda init, answer yes
+When installation ask if you want to run conda init, answer yes.
+  <br />
 After installation ends, reload bash
 ```
 bash 
@@ -126,15 +127,17 @@ As a reminder, this pipeline processes the output data from FROGS pipeline.
 
 A Snakemake environment file is a file that specifies the software dependencies required for running a Snakemake workflow. It typically contains a list of software packages along with their versions, which are necessary for executing the various steps or rules defined in the workflow. The environment file ensures reproducibility by providing a consistent software environment for running the workflow across different computing environments. Please used this environement file to create a conda environement adapted to run HAMI framework (HAMI_PIPELINE.smk).
 <br />
-Do it as follow : 
+<br />
+Do it as follows: 
 ``` bash
 conda env create -f HAMI_environment.yaml  --name HAMI_environment
 ``` 
 <br />
 Then activate it:
+
 ``` bash
 conda activate HAMI_environment
-```
+``` 
 <br />
 
 ## Setup your config file
