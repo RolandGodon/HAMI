@@ -30,7 +30,7 @@ snakemake --cores 1  -s HAMI/HAMI_PIPELINE.smk
 """
 
 
-configfile :"HAMI/config.yaml"
+configfile :"HAMI_PIPELINE/config.yaml"
 
 rule all:
     """

@@ -1,0 +1,25 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job                                        count
+---------------------------------------  -------
+Clean_and_Chimeres                             1
+Filter_METABARCODING_DATA                      1
+Pseudogene_Filter_and_reduce_redundancy        1
+Separate_BARCODING_METABARCODING_data          1
+all                                            1
+total                                          5
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Thu Mar  7 11:22:16 2024]
+localrule Clean_and_Chimeres:
+    input: /home/penelben/Documents/GitHub/HAMI/DATA/test_data/testCOI_abundance_raw.csv, /home/penelben/Documents/GitHub/HAMI/DATA/test_data/testCOI_multi-affiliations.csv
+    output: /home/penelben/Documents/GitHub/HAMI/DATA/test_data/chimeras/testCOI_chimeras_summary.txt, /home/penelben/Documents/GitHub/HAMI/DATA/test_data/chimeras/testCOI_chimeras_list.txt, /home/penelben/Documents/GitHub/HAMI/DATA/test_data/testCOI_cleaned_abundance.txt
+    jobid: 4
+    reason: Missing output files: /home/penelben/Documents/GitHub/HAMI/DATA/test_data/testCOI_cleaned_abundance.txt
+    resources: tmpdir=/tmp
+
