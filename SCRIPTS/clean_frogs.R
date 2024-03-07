@@ -46,8 +46,15 @@ rm(list=ls())# Reset
 suppressPackageStartupMessages(library(data.table))
 suppressPackageStartupMessages(library(tidyr))
 suppressPackageStartupMessages(library(dplyr))
-if (!require("dada2", quietly = TRUE)) {
-  install.packages("dada2")
+options(repos = c(CRAN = "http://cran.univ-lyon1.fr/"))
+if (!requireNamespace("BiocManager", quietly = TRUE))  {
+  print("Package installation in progress, this may take a couple of minutes")
+  install.packages("BiocManager",quiet=TRUE)
+  }
+if (!require("dada2", quietly = TRUE)){ 
+  print("Package installation in progress, this may take a couple of minutes")
+  BiocManager::install(version = '3.18',quiet=TRUE)
+  BiocManager::install("dada2", version = "3.18",quiet=TRUE)
 }
 suppressPackageStartupMessages(library(dada2)) # BioConductor
 

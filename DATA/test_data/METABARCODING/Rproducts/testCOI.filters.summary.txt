@@ -1,0 +1,8 @@
+"nsamples"	"ntaxa"	"nseqs"
+"all"	22	614	NA
+"samples"	14	548	122971
+"negative"	8	129	9347
+"samples.filter1"	22	613	132312
+"samples.filter2"	11	133	120426
+"samples.filter3"	3	133	98618
+Log = file:testCOI,rfa_filter1:2e-04,number_negatives_filter2:8

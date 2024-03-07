@@ -9,7 +9,17 @@ library(matrixStats)
 library(data.table)
 library(vegan)
 
-library(phyloseq)# to install phyloseq source, use 'install_github("joey711/phyloseq")' which requires the devtools package
+
+# To install phyloseq :
+options(repos = c(CRAN = "http://cran.univ-lyon1.fr/"))
+if(!requireNamespace("phyloseq", quietly = TRUE)){  #use 'install_github("joey711/phyloseq")' which requires the devtools package
+    print("Package installation in progress, this may take a couple of minutes")
+    if(!requireNamespace("phyloseq", quietly = TRUE)){ 
+        options(repos = c(igraph = 'https://igraph.r-universe.dev',CRAN = 'https://cloud.r-project.org' ))
+        install.packages('igraph')}
+    options(repos = c(CRAN = "http://cran.univ-lyon1.fr/"))
+    devtools::install_github("joey711/phyloseq",quiet=TRUE)}
+library(phyloseq)
 
 ## ----load filtering fonctions----
 source("./Tccfilter.R")
