@@ -142,7 +142,7 @@ A Snakemake environment file is a file that specifies the software dependencies 
 <br />
 Do it as follows: 
 ``` bash
-conda env create -f HAMI_environment.yaml  --name HAMI_environment
+conda env create -f HAMI-PIPELINE/HAMI_environment.yaml  --name HAMI_environment
 ``` 
 <br />
 
