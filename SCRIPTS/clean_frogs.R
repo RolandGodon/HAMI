@@ -46,6 +46,9 @@ rm(list=ls())# Reset
 suppressPackageStartupMessages(library(data.table))
 suppressPackageStartupMessages(library(tidyr))
 suppressPackageStartupMessages(library(dplyr))
+if (!require("dada2", quietly = TRUE)) {
+  install.packages("dada2")
+}
 suppressPackageStartupMessages(library(dada2)) # BioConductor
 
 
