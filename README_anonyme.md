@@ -10,6 +10,18 @@
 *Method in Ecology and Evolution, XXXXX, XXXXX 2024*<br />
 <br />
 
+## Prerequisites
+
+The role of HAMI snakemake pipeline is to process the output of the FROGS pipeline as part of the HAMI framework. To run HAMI pipeline, abudance data and multi-affiliations data from FROGS are thus necessary. 
+<br />
+<br />
+Note that for running HAMI pipeline in contexte of HAMI framework, it is also necessary that your samples can be discrimated based on their name. Please use alphabectic prefix  for it e.g : 
+Metabarcoding samples = META0001 while Barcoding sample = BAR0001 and control samples = NC(P/I/E)00001.
+<br />
+<br />
+Also, duplicate of metabarcoding samples and control samples are necessary. Discrimination between duplicate will be done using suffix : e.g META0001-A / META0001-B. 
+Information allowing discrimination between samples will thus be implemented in the config file (see below).
+
 ## Description  
 
 ### Tree structure :
@@ -22,19 +34,19 @@
 </head>
 <body>
     <ul>
-        <li><strong>HAMI_FRAMEWORK</strong>
+        <li><strong>HAMI</strong>
             <ul>
                 <li><strong>DATA</strong>  
                     <ul>
                         <li>test_data 
                             <ul>
-                                <li>AgriB03BB_abundance_raw.csv</li>
-                                <li>AgriB03BB_multi-affiliations.csv</li>
+                                <li>testCOI_abundance_raw.csv</li>
+                                <li>testCOI_multi-affiliations.csv</li>
                             </ul>
                         </li>
                     </ul>
                 </li>
-                <li><strong>HAMI</strong> 
+                <li><strong>HAMI_PIPELINE</strong> 
                     <ul>
                         <li>config.yaml</li>  
                         <li>HAMI_environment.yaml</li>  
@@ -119,7 +131,7 @@ cd HAMI
 ```
 When the git clone is finished, you should find a tree structure similar to the one shown at the beginning of this file.
 To ensure the functionality of the HAMIE pipeline, no changes should be made to the tree structure.
-Simply import the data that you wish to process in relation to your project into the /HAMI_FRAMEWORK/DATA/ directory.
+Simply import the data that you wish to process in relation to your project into the /HAMI/DATA/ directory.
 As a reminder, this pipeline processes the output data from FROGS pipeline. 
 
 
@@ -133,11 +145,21 @@ Do it as follows:
 conda env create -f HAMI_environment.yaml  --name HAMI_environment
 ``` 
 <br />
-Then activate it:
+
+## Activate your environment
+
+Before running HAMI pipeline, the previously created environement need to be activate as follows:
 
 ``` bash
 conda activate HAMI_environment
-``` 
+```
+To deactivate your environment use the following line code : 
+
+``` bash
+conda deactivate 
+```
+Don't forget to reactivate your conda environment each time you re-use the pipeline. 
+
 <br />
 
 ## Setup your config file
@@ -159,11 +181,6 @@ Here is the list of specific setting which are necessary for running HAMI pipeli
 - List of the codon stop associated to your type of DNA and organisms
 - Arbitrary threshold to discriminated intra-interspecific genetic distance  (usually 97% for animals according to Hebert et al 2003 - Proceedings of the Royal Society of London)
 
-
-**Note** that for running HAMI pipeline in contexte of HAMI framework, your samples need to be discrimated based on their name. Please use alphabectic prefix  for it e.g : 
-Metabarcoding samples = CMEY0001 While Barcoding sample = JHAR0001. 
-Also duplicate metabarcoding samples are necessary. Discrimination between duplicate will be done using suffix : e.g CMEY0001-A / CMEY0001-B. Information allowing discrimination between samples will thus be implemented in the config file!
-
 - Samples prefix for metabarcoding samples, barcoding (if implemented), and negative control
 - Number of digits following the prefix
 - Samples suffix for discriminating duplicate
@@ -171,15 +188,17 @@ Also duplicate metabarcoding samples are necessary. Discrimination between dupli
 
 ## Test and run your pipeline
 
+To launch the pipeline from a terminal, go to the HAMI directory.
+
 It is strongly recommended to test if your configuration is valid and matches the analyses you intended. To do so, launch a dry run of the pipeline using the command:
 
 ``` bash
-snakemake --snakefile [snakefile].smk -np
+snakemake --snakefile HAMI_PIPELINE/HAMI_PIPELINE.smk -np
 ```
-If no error is throwed, you can lauch the analysis :
+If no error is throwed, you can lauch the pipeline :
 
 ``` bash
-snakemake --snakefile [snakefile].smk --cores [#cores]
+snakemake --snakefile HAMI_PIPELINE/HAMI_PIPELINE.smk --cores [#cores]
 ```
 
 ## Contact
