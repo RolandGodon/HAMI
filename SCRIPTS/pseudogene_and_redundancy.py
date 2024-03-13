@@ -209,7 +209,10 @@ for cell in range(len(data["blast_taxonomy"])): # For each OTU identified
          ### and fill the lists with the following information               
          DICO[OTU]["Taxon_name"].append(data["blast_taxonomy"][cell])
          DICO[OTU]["Nbr_cluster"].append(int(1))
-         DICO[OTU]["multi"].append(int(0))
+         if "Multi-affiliation" in data["blast_taxonomy"][cell]:
+            DICO[OTU]["multi"].append(int(1))
+         else :
+            DICO[OTU]["multi"].append(int(0))
          DICO[OTU]["Observation"].append(int(data["observation_sum"][cell]))
          DICO[OTU]["Seq"].append(data["seed_sequence"][cell])
          if (data["blast_perc_identity"][cell]>0 and data["blast_perc_identity"][cell]<=100):
@@ -220,14 +223,9 @@ for cell in range(len(data["blast_taxonomy"])): # For each OTU identified
          for i in sites: 
             if pd.isnull(data[i][cell]) == True :
                DICO[OTU][i].append(int(0))
-            else:
-               if data[i][cell] >=0:
-                  DICO[OTU][i].append(int(data[i][cell]))
-               else :
-                  DICO[OTU][i].append(int(data[i][cell]))
-                  DICO[OTU]["multi"][0]=int(1)
+            elif data[i][cell] >=0:
+               DICO[OTU][i].append(int(data[i][cell]))
 
-         
          donelist.append( data["blast_taxonomy"][cell]) #Save the name of the OTU
          OTU=OTU+1 #anticipate the discovery of a new identified OTU to create a new list if necessary 
          
@@ -247,22 +245,8 @@ for cell in range(len(data["blast_taxonomy"])): # For each OTU identified
                      #Merge of occurences 
                      DICO[liste]["Observation"][0]=int(DICO[liste]["Observation"][0]+data["observation_sum"][cell]) 
                      for i in sites:
-                        if pd.isnull(data[i][cell]) == False:
-
-                           if data[i][cell] >=1 and DICO[liste][i][0] >=0 : 
-                              DICO[liste][i][0]=int(DICO[liste][i][0]+data[i][cell])
-
-                           elif data[i][cell] < 0 and DICO[liste][i][0] <=0:
-                              DICO[liste][i][0]=int(DICO[liste][i][0]+data[i][cell])
-                              DICO[liste]["multi"][0]=int(1)
-
-                           elif data[i][cell] < 0 and DICO[liste][i][0] >=1 :
-                              DICO[liste][i][0] =int(data[i][cell] - DICO[liste][i][0])
-                              DICO[liste]["multi"][0]=int(1)
-                              
-                           elif data[i][cell] >=1 and DICO[liste][i][0] <0 :
-                              DICO[liste][i][0] =int(DICO[liste][i][0]- data[i][cell])
-                              DICO[liste]["multi"][0]=int(1)
+                        if pd.isnull(data[i][cell]) == False and data[i][cell] >=1:
+                           DICO[liste][i][0]=int(DICO[liste][i][0]+data[i][cell])
 
                      #Refreshes the identity percentage range 
                      if data["blast_perc_identity"][cell]<DICO[liste]["min_identity"][0]:
@@ -283,22 +267,8 @@ for cell in range(len(data["blast_taxonomy"])): # For each OTU identified
                      #merge of occurences 
                      DICO[liste]["Observation"][0]=int(DICO[liste]["Observation"][0]+data["observation_sum"][cell])
                      for i in sites:
-                           if pd.isnull(data[i][cell]) == False:
-
-                              if data[i][cell] >=1 and DICO[liste][i][0] >=0 : 
-                                 DICO[liste][i][0]=int(DICO[liste][i][0]+data[i][cell])
-
-                              elif data[i][cell] < 0 and DICO[liste][i][0] <=0:
-                                 DICO[liste][i][0]=int(DICO[liste][i][0]+data[i][cell])
-                                 DICO[liste]["multi"][0]=int(1)
-
-                              elif data[i][cell] < 0 and DICO[liste][i][0] >=1 :
-                                 DICO[liste][i][0] =int(data[i][cell] - DICO[liste][i][0])
-                                 DICO[liste]["multi"][0]=int(1)
-                              
-                              elif data[i][cell] >=1 and DICO[liste][i][0] <0 :
-                                 DICO[liste][i][0] =int(DICO[liste][i][0]- data[i][cell])
-                                 DICO[liste]["multi"][0]=int(1)
+                           if pd.isnull(data[i][cell]) == False and data[i][cell] >=1:
+                              DICO[liste][i][0]=int(DICO[liste][i][0]+data[i][cell])
 
                      #Refreshes the identity percentage range 
                      if data["blast_perc_identity"][cell]<DICO[liste]["min_identity"][0]:
@@ -312,7 +282,7 @@ for cell in range(len(data["blast_taxonomy"])): # For each OTU identified
 
             liste=liste+1
             
-         ## If we reach the limits of my loop, it's because the OTU encountered, 
+         ## If we reach the limits of the loop, it's because the OTU encountered, 
          #although it has the same taxonomic affiliation as a previously one, it has a different percentage of identity 
          #We thus create another group. Next time, if a new OTU with a similar taxonomic affiliation is found,
          # it will be in one of the two previous case (>threshold or <threshold)
@@ -334,7 +304,10 @@ for cell in range(len(data["blast_taxonomy"])): # For each OTU identified
                ### FILLED THE LISTS
                DICO[OTU]["Taxon_name"].append(data["blast_taxonomy"][cell])
                DICO[OTU]["Nbr_cluster"].append(int(1))
-               DICO[OTU]["multi"].append(int(0))
+               if "Multi-affiliation" in data["blast_taxonomy"][cell]:
+                  DICO[OTU]["multi"].append(int(1))
+               else :
+                  DICO[OTU]["multi"].append(int(0))
                DICO[OTU]["Cluster"].append(data["cluster"][cell])
                DICO[OTU]["max_identity"].append(data["blast_perc_identity"][cell])
                DICO[OTU]["min_identity"].append(data["blast_perc_identity"][cell])
@@ -344,12 +317,9 @@ for cell in range(len(data["blast_taxonomy"])): # For each OTU identified
                for i in sites:
                   if pd.isnull(data[i][cell]) == True :
                      DICO[OTU][i].append(int(0))
-                  else:
-                     if data[i][cell] >=0:
-                        DICO[OTU][i].append(int(data[i][cell]))
-                     else :
-                        DICO[OTU][i].append(int(data[i][cell]))
-                        DICO[OTU]["multi"][0]=int(1)
+                  elif data[i][cell] >=0:
+                     DICO[OTU][i].append(int(data[i][cell]))
+
                OTU=OTU+1
 
 #################################################
@@ -396,12 +366,8 @@ for cell in range(len(multidata["blast_taxonomy"])):
          for i in sites:
             if pd.isnull(multidata[i][cell]) == True :
                DICO1[OTU][i].append(int(0))
-            else:
-               if data[i][cell] >=0:
-                  DICO1[OTU][i].append(int(multidata[i][cell]))
-               else :
-                  DICO1[OTU][i].append(int(multidata[i][cell]))
-
+            elif data[i][cell] >=0:
+               DICO1[OTU][i].append(int(multidata[i][cell]))
 
          OTU=OTU+1
          donelist.append( multidata["blast_taxonomy"][cell])
@@ -409,8 +375,8 @@ for cell in range(len(multidata["blast_taxonomy"])):
       else: 
          liste=0
          while liste < len(DICO1):
-            if multidata["blast_taxonomy"][cell] == DICO1[liste]["Taxon_name"][0]: # Je rentre dans le taxon concerner         
-                        DICO1[liste]["Nbr_cluster"][0]=DICO1[liste]["Nbr_cluster"][0]+int(1) #ajout 1 au nombre de cluster fusionner
+            if multidata["blast_taxonomy"][cell] == DICO1[liste]["Taxon_name"][0]:         
+                        DICO1[liste]["Nbr_cluster"][0]=DICO1[liste]["Nbr_cluster"][0]+int(1) 
                         DICO1[liste]["Observation"][0]=int(DICO1[liste]["Observation"][0]+multidata["observation_sum"][cell])
                         for i in sites:
                            if pd.isnull(multidata[i][cell]) == False:
