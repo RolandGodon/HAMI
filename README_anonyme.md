@@ -99,15 +99,15 @@ Each rule call a specific R or Python script saved in SCRIPTS directory. Two add
 
 According to metabarcoding data, 3 final outputs are produced and saved in DATA/our_data/METABARCODING/final_files repository.
 
--occurence_file.tsv : It is an occurrence table broadly similar to that produced by FROGS, but in which names have been revised and clusters with similar taxonomic affiliation and percent identity have been merged. Each taxonomic affiliation in the occurrence table is associated with the number of clusters that have been merged to produce that specific OTU and the range of variance in percentage of identity corresponding to the merged clusters.
+- occurence_file.tsv : It is an occurrence table broadly similar to that produced by FROGS, but in which names have been revised and clusters with similar taxonomic affiliation and percent identity have been merged. Each taxonomic affiliation in the occurrence table is associated with the number of clusters that have been merged to produce that specific OTU and the range of variance in percentage of identity corresponding to the merged clusters.
 
--cluster_merged.txt : It is a file which records the name of each cluster associated with the merged OTUs in the occurence_file.tsv file.
+- cluster_merged.txt : It is a file which records the name of each cluster associated with the merged OTUs in the occurence_file.tsv file.
 
--Cluster_seq_keep.txt : Itis a fasta file in which all the DNA sequences that have passed all the filters applied during the HAMI pipeline are recorded and labelled with their taxonomic affiliation and cluster number.  
+- cluster_seq_keep.txt : Itis a fasta file in which all the DNA sequences that have passed all the filters applied during the HAMI pipeline are recorded and labelled with their taxonomic affiliation and cluster number.  
 
 According to barcoding data, 1 final outputs is produced and saved in DATA/our_data/BARCODE repository.
 
--abundance_raw_data_BARCODING.tsv : It is an occurrence table similar to that produced by FROGS, but in which names have been revised and chimera sequence have been deleted. Future implementations of this pipeline could be envisaged to process pseudogenes in the same way as metabarcoding data. 
+- abundance_raw_data_BARCODING.tsv : It is an occurrence table similar to that produced by FROGS, but in which names have been revised and chimera sequence have been deleted. Future implementations of this pipeline could be envisaged to process pseudogenes in the same way as metabarcoding data. 
 
 
 
