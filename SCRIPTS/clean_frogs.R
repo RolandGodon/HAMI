@@ -79,11 +79,11 @@ fragment<-args[5] # name of the DNA fragment sequenced,  it will be used to impo
 threads<-args[6] #threads used for chimera deletion
 
 mt<-fread(multi_namefile,sep=";",header=TRUE) #open multihits file
-mh <- data.table(bidouille=mt$blast_taxonomy, blast_taxonomy=mt$blast_taxonomy, observation_name=mt$`#observation_name`)
+mh <- data.table(newtaxaname=mt$blast_taxonomy, blast_taxonomy=mt$blast_taxonomy, observation_name=mt$`#observation_name`)
 rm(mt)
 
 at<-fread(abundance_namefile,sep=";",header=TRUE)# open the abundance file
-ab <- data.table(bidouille=at$`blast_taxonomy`, blast_taxonomy=at$`blast_taxonomy`, observation_name=at$observation_name)
+ab <- data.table(newtaxaname=at$`blast_taxonomy`, blast_taxonomy=at$`blast_taxonomy`, observation_name=at$observation_name)
 
 
 ###### CREATE CHIMERAS DIRECTORY : 
@@ -103,13 +103,13 @@ if (!file.exists(RPRODUCT)) {
 
 print("cleaning of the taxonomic nomenclature")
 ## Cleaning for the special characters []()_"0123456789.
-mh$bidouille<-gsub("[\\[\\]()\"0-9]","",mh$bidouille,perl=TRUE)
-mh$bidouille<-gsub(" +;",";",mh$bidouille,perl=TRUE)
+mh$newtaxaname<-gsub("[\\[\\]()\"0-9]","",mh$newtaxaname,perl=TRUE)
+mh$newtaxaname<-gsub(" +;",";",mh$newtaxaname,perl=TRUE)
 
 ## Deconstruction of the taxonomic column ('blast_taxonomy') in 7 taxonomic fields
-toto<- mh[ , "bidouille"] %>% separate(bidouille,c("tx1","tx2","tx3","tx4","tx5","tx6","tx7"),";")
-mh<-cbind(toto,mh[, c("observation_name" ,"blast_taxonomy")]) # observation name is the cluster ID and useful to link with the abundance tsv file
-rm(toto)
+taxa_names<- mh[ , "newtaxaname"] %>% separate(newtaxaname,c("tx1","tx2","tx3","tx4","tx5","tx6","tx7"),";")
+mh<-cbind(taxa_names,mh[, c("observation_name" ,"blast_taxonomy")]) # observation name is the cluster ID and useful to link with the abundance tsv file
+rm(taxa_names)
 
 
 
@@ -202,14 +202,14 @@ my.mh.result <- data.table(observation_name=my.second.result$observation_name,  
 ###################
 
 ## Cleaning for some special characters
-ab$bidouille<-gsub("[\\[\\]()\"0-9]","",ab$bidouille,perl=TRUE)
-ab$bidouille<-gsub(" +;",";",ab$bidouille,perl=TRUE)
+ab$newtaxaname<-gsub("[\\[\\]()\"0-9]","",ab$newtaxaname,perl=TRUE)
+ab$newtaxaname<-gsub(" +;",";",ab$newtaxaname,perl=TRUE)
 
 ## Deconstruction of the taxonomic column in 7 taxonomic fields
-ab  <- ab[ab$bidouille!="no data"]
-toto<- ab[ , "bidouille"] %>% separate(bidouille,c("tx1","tx2","tx3","tx4","tx5","tx6","tx7"),";")
-ab<-cbind(toto,ab[, c("observation_name" ,"blast_taxonomy")])
-rm(toto)
+ab  <- ab[ab$newtaxaname!="no data"]
+taxa_names<- ab[ , "newtaxaname"] %>% separate(newtaxaname,c("tx1","tx2","tx3","tx4","tx5","tx6","tx7"),";")
+ab<-cbind(taxa_names,ab[, c("observation_name" ,"blast_taxonomy")])
+rm(taxa_names)
 
 
 
