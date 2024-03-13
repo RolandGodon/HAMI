@@ -99,7 +99,7 @@ Each rule call a specific R or Python script saved in SCRIPTS directory. Two add
 
 According to metabarcoding data, 3 final outputs are produced and saved in DATA/our_data/METABARCODING/final_files repository.
 
-- occurence_file.tsv : It is an occurrence table broadly similar to that produced by FROGS, but in which names have been revised and clusters with similar taxonomic affiliation and percent identity have been merged. Each taxonomic affiliation in the occurrence table is associated with the number of clusters that have been merged to produce that specific OTU and the range of variance in percentage of identity corresponding to the merged clusters.
+- occurence_file.tsv : It is an occurrence table broadly similar to that produced by FROGS, but in which names have been revised and clusters with similar taxonomic affiliation and percent identity have been merged. Each taxonomic affiliation in the occurrence table is associated with the number of clusters that have been merged to produce that specific OTU and the range of variance in percentage of identity corresponding to the merged clusters. The "multi" variable is used to discriminate OTUs with taxonomic affiliations associated with the "Multi-affiliation" term or identity percentages associated with the "multi-identity" term. See FROGS documentation for the meaning of these terms.  
 
 - cluster_merged.txt : It is a file which records the name of each cluster associated with the merged OTUs in the occurence_file.tsv file.
 
