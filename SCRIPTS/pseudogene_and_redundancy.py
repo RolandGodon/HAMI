@@ -61,8 +61,8 @@ stop_codon=sys.argv[11:] # List of codon stop
 Diclog={}
 Diclog["id"]=[]
 Diclog["Ntaxa"]=[]
-Diclog["Nseq"]=[]
-
+Diclog["NCluster"]=[]
+Diclog["Nreads"]=[]
 
 ###OPEN FILES
 csvfile=open(abundpath) #abundance file open
@@ -104,8 +104,9 @@ col.to_csv(os.path.join(directorypath+"/METABARCODING/intermediary_step/"+Name+f
 
 #Set logfile of initial file 
 Diclog["id"].append("After.filter.3")
-Diclog["Nseq"].append(int(df.shape[0]))
+Diclog["NCluster"].append(int(df.shape[0]))
 Diclog["Ntaxa"].append(int(df["blast_taxonomy"].nunique()))
+Diclog["Nreads"].append(int(df.iloc[:,11:].sum().sum()))
 
 
 ###############################################################
@@ -151,8 +152,9 @@ pseudogene.to_csv(os.path.join(directorypath+"/METABARCODING/intermediary_step/p
 
 #Set logfile for first pseudogene filter 
 Diclog["id"].append("After.filter.pseudogene1")
-Diclog["Nseq"].append(int(realcol.shape[0]))
+Diclog["NCluster"].append(int(realcol.shape[0]))
 Diclog["Ntaxa"].append(int(realcol["blast_taxonomy"].nunique()))
+Diclog["Nreads"].append(int(realcol.iloc[:,11:].sum().sum()))
 
 
 #############################################
@@ -456,6 +458,7 @@ for i in DICO:
 nseq=0
 listtaxa=[]
 Ntaxa=0
+Nread=0
 
 print('Automation complete ')
 print('compilation of files')
@@ -475,7 +478,7 @@ with open(os.path.join(directorypath+"/METABARCODING/final_files/"+Name+fragment
 
    for i in range(len(DICO)):
       if i not in delposition:
-         #Calcul number of Taxa AND Seq saved in the final files
+         #Calcul number of Taxa AND CLuster saved in the final files
          nseq=nseq+int(DICO[i]["Nbr_cluster"][0])
          if DICO[i]["Taxon_name"][0] not in listtaxa:
             listtaxa.append(DICO[i]["Taxon_name"][0])
@@ -499,12 +502,13 @@ with open(os.path.join(directorypath+"/METABARCODING/final_files/"+Name+fragment
             [f.write('\t')]
          [f.write(str(DICO[i]["Observation"][0]))]       
          for j in sites:
+            Nread=Nread+int(DICO[i][j][0]) #Calcul number of reads saved in final file
             [f.write('\t')]
             [f.write(str(DICO[i][j][0] ))]
          [f.write('\n')]
 
    for i in range(len(DICO1)):
-      #Calcul number of Taxa AND Seq saved in the final files
+      #Calcul number of Taxa AND Cluster saved in the final files
       nseq=nseq+int(DICO1[i]["Nbr_cluster"][0])
       if DICO1[i]["Taxon_name"][0] not in listtaxa:
          listtaxa.append(DICO1[i]["Taxon_name"][0])
@@ -528,6 +532,7 @@ with open(os.path.join(directorypath+"/METABARCODING/final_files/"+Name+fragment
          [f.write('\t')]
       [f.write(str(DICO1[i]["Observation"][0]))]       
       for j in sites:
+         Nread=Nread+int(DICO1[i][j][0]) #Calcul number of reads saved in final file
          [f.write('\t')]
          [f.write(str(DICO1[i][j][0] ))]
       [f.write('\n')]
@@ -615,8 +620,9 @@ f.close()
 
 #Set logfile for second pseudogene filter 
 Diclog["id"].append("After.filter.pseudogene2")
-Diclog["Nseq"].append(int(nseq))
 Diclog["Ntaxa"].append(int(Ntaxa))
+Diclog["Nreads"].append(int(Nread))
+Diclog["NCluster"].append(int(nseq))
 
 #Write log file
 with open(os.path.join(directorypath+"/METABARCODING/final_files/"+Name+fragment+'_'+affiliation+'_summary.txt'), 'w') as f:

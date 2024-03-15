@@ -322,9 +322,9 @@ print('End Data Filtering')
 ## Summary file for data filtering
 if (alien_in_samples == "yes")  {
   nsamples<-c(nsamples(data),nsamples(raw.data),nsamples(alien.data),nsamples(negative.data),nsamples(f1.data),nsamples(merged.data),nsamples(f3.data))
-  ntaxa<-c(ntaxa(data),ntaxa(raw.data),ntaxa(alien.data),ntaxa(negative.data),ntaxa(f1.data),ntaxa(merged.data),ntaxa(f3.data))
-  nseqs<-c(sum(taxa_sums(data)),sum(taxa_sums(raw.data)),sum(taxa_sums(alien.data)),sum(taxa_sums(negative.data)),sum(taxa_sums(f1.data)),sum(taxa_sums(merged.data)),sum(taxa_sums(f3.data)))
-  df<-data.frame(nsamples, ntaxa, nseqs)
+  ncluster<-c(ntaxa(data),ntaxa(raw.data),ntaxa(alien.data),ntaxa(negative.data),ntaxa(f1.data),ntaxa(merged.data),ntaxa(f3.data))
+  nread<-c(sum(taxa_sums(data)),sum(taxa_sums(raw.data)),sum(taxa_sums(alien.data)),sum(taxa_sums(negative.data)),sum(taxa_sums(f1.data)),sum(taxa_sums(merged.data)),sum(taxa_sums(f3.data)))
+  df<-data.frame(nsamples, ncluster, nread)
   rownames(df)<-c("all","samples","alien","negative","samples.filter1","samples.filter2","samples.filter3")
   df
   write.table(df,file=paste(RPRODUCT,name,".filters.summary.txt",sep=""),sep="\t")
@@ -332,15 +332,58 @@ if (alien_in_samples == "yes")  {
 }
 if (alien_in_samples == "no")  {
   nsamples<-c(nsamples(data),nsamples(raw.data),nsamples(negative.data),nsamples(f1.data),nsamples(merged.data),nsamples(f3.data))
-  ntaxa<-c(ntaxa(data),ntaxa(raw.data),ntaxa(negative.data),ntaxa(f1.data),ntaxa(merged.data),ntaxa(f3.data))
-  nseqs<-c(sum(taxa_sums(data)),sum(taxa_sums(raw.data)),sum(taxa_sums(negative.data)),sum(taxa_sums(f1.data)),sum(taxa_sums(merged.data)),sum(taxa_sums(f3.data)))
-  df<-data.frame(nsamples, ntaxa, nseqs)
+  ncluster<-c(ntaxa(data),ntaxa(raw.data),ntaxa(negative.data),ntaxa(f1.data),ntaxa(merged.data),ntaxa(f3.data))
+  nread<-c(sum(taxa_sums(data)),sum(taxa_sums(raw.data)),sum(taxa_sums(negative.data)),sum(taxa_sums(f1.data)),sum(taxa_sums(merged.data)),sum(taxa_sums(f3.data)))
+  df<-data.frame(nsamples, ncluster, nread)
   rownames(df)<-c("all","samples","negative","samples.filter1","samples.filter2","samples.filter3")
   
   df
   write.table(df,file=paste(RPRODUCT,name,".filters.summary.txt",sep=""),sep="\t")
   cat(paste("Log = file:",name,",rfa_filter1:",rfa,sep="",",number_negatives_filter2:",nsamples(negative.data)),file=paste(RPRODUCT,name,".filters.summary.txt",sep=""),append=TRUE)
 }
+
+print("End Summary")
+
+
+###################
+##               ##
+##    QUALITY    ##
+##    CHECKS     ##
+##               ##
+###################
+
+## Check quality of replicates
+# computation of R2 on the number of sequences for all OTUs = take a long time...
+datachecks<- f2.data
+rep1<-subset_samples(datachecks, rep %in% c("1"))
+rep2<-subset_samples(datachecks, rep %in% c("2"))
+
+allrep<-matrix(NA,nrow=(ntaxa(datachecks)*0.5*(nsamples(datachecks))),ncol=2)
+for (i in 1:(ntaxa(datachecks))){
+  nreads.rep1<-apply((otu_table(rep1)[i]),1,identity)
+  nreads.rep2<-apply((otu_table(rep2)[i]),1,identity)
+  rep<-cbind(nreads.rep1,nreads.rep2)
+  allrep<-rbind(allrep,rep)
+}
+allrep<-data.frame(allrep)
+names(allrep)<-c("nreads.rep1","nreads.rep2")
+model<-(lm(allrep$nreads.rep1~allrep$nreads.rep2))
+anova(model)
+Rcarre<-anova(model)[1,2]/(anova(model)[1,2]+anova(model)[2,2])
+p<-ggplot(allrep, aes(x=nreads.rep1,y=nreads.rep2))
+p<-p+expand_limits(y=0)+expand_limits(x=0)
+p<-p+ scale_x_log10()+scale_y_log10()
+p<-p + geom_point()
+p<-p + geom_abline(slope=1, intercept=0)
+p<-p+ggtitle(paste("R2 = ",round(Rcarre,3)))
+
+
+ggsave(filename = paste(RPRODUCT, name, ".nreads_by_replicate.jpeg", sep = ""),
+       plot = p,
+       width = 6,
+       height = 6,
+       units = "in",
+       dpi = 600)
 
 
 print('End')
