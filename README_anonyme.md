@@ -40,8 +40,8 @@ Information allowing discrimination between samples will thus be implemented in 
                     <ul>
                         <li>test_data 
                             <ul>
-                                <li>testCOI_abundance_raw.csv</li>
-                                <li>testCOI_multi-affiliations.csv</li>
+                                <li>[testCOI_abundance_raw.tsv].tabular</li>
+                                <li>[testCOI_multi-affiliations.tsv].tabular</li>
                             </ul>
                         </li>
                     </ul>
@@ -95,15 +95,57 @@ To do this, there are five successive rules:
 
 Each rule call a specific R or Python script saved in SCRIPTS directory. Two additional scripts are available. They allow to delete pseudogene data in barcoding data and to produce full length COI barcode according to the optional step of HAMI framework, which are no implemented in the HAMI pipeline.
 
+## Outputs :
+
+### Tree structures :
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <h1>Figures</h1>
+    <ul>
+        <li>test_data
+            <ul>
+                <li>BARCODE
+                    <ul>
+                        <!-- No files here -->
+                    </ul>
+                </li>
+                <li>Chimeras
+                    <ul>
+                        <!-- No files here -->
+                    </ul>
+                </li>
+                <li>METABARCODING
+                    <ul>
+                        <li>final_files</li>
+                        <li>intermediary_step</li>
+                        <li>Rproducts</li>
+                    </ul>
+                </li>
+                <li>[testCOI_abundance_raw.tsv].tabular</li>
+                <li>[testCOI_multi-affiliations.tsv].tabular</li>
+            </ul>
+        </li>
+    </ul>
+</body>
+</html>
+
+
 ### Final outputs :
 
 According to metabarcoding data, 3 final outputs are produced and saved in DATA/our_data/METABARCODING/final_files repository.
 
-- occurence_file.tsv : It is an occurrence table broadly similar to that produced by FROGS, but in which names have been revised and clusters with similar taxonomic affiliation and percent identity have been merged. Each taxonomic affiliation in the occurrence table is associated with the number of clusters that have been merged to produce that specific OTU and the range of variance in percentage of identity corresponding to the merged clusters. The "multi" variable is used to discriminate OTUs with taxonomic affiliations associated with the "Multi-affiliation" term or identity percentages associated with the "multi-identity" term. See FROGS documentation for the meaning of these terms.  
+- final_abundance_file.tsv : It is an occurrence table broadly similar to that produced by FROGS, but in which names have been revised and clusters with similar taxonomic affiliation and percent identity have been merged. Each taxonomic affiliation in the occurrence table is associated with the number of clusters that have been merged to produce that specific OTU and the range of variance in percentage of identity corresponding to the merged clusters. The "multi" variable is used to discriminate OTUs with taxonomic affiliations associated with the "Multi-affiliation" term or identity percentages associated with the "multi-identity" term. See FROGS documentation for the meaning of these terms.  
 
 - cluster_merged.txt : It is a file which records the name of each cluster associated with the merged OTUs in the occurence_file.tsv file.
 
-- cluster_seq_keep.txt : Itis a fasta file in which all the DNA sequences that have passed all the filters applied during the HAMI pipeline are recorded and labelled with their taxonomic affiliation and cluster number.  
+- cluster_seq_keep.txt : Itis a fasta file in which all the DNA sequences that have passed all the filters applied during the HAMI pipeline are recorded and labelled with their taxonomic affiliation and cluster number.
+
+- summary.txt : It is a summary file which gave general information about how much taxonomic affiliation, cluster and number of reads were kept in final_abundance_file  and how much have been deleted during pseudogene curation step.
 
 According to barcoding data, 1 final outputs is produced and saved in DATA/our_data/BARCODE repository.
 
@@ -188,9 +230,10 @@ A Snakemake configuration file (config.yaml) is a file written in Python that co
 Here is the list of specific setting which are necessary for running HAMI pipeline:
 
 - Name of projet
-- Name of the DNA fragment 
+- Name of the DNA fragment
 - Number of treads used to run some internal process
 - Path to your directory project, as well as data directory and script directory
+- Name of the two first inputs used in HAMI pipeline (or FROGS outputs : abundance and multi-affiliation files )
 
 - Target taxonomic group
 - ADN length
