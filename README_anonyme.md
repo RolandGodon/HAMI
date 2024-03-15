@@ -105,25 +105,41 @@ Each rule call a specific R or Python script saved in SCRIPTS directory. Two add
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <h1>Figures</h1>
     <ul>
         <li>test_data
             <ul>
-                <li>BARCODE
+                <li><strong>BARCODE</strong>
                     <ul>
-                        <!-- No files here -->
+                        <li> <strong>abundance_raw_data_BARCODING.tsv </strong></li>
                     </ul>
                 </li>
-                <li>Chimeras
+                <li><strong>Chimeras</strong>
                     <ul>
-                        <!-- No files here -->
+                        <li><em> 2 files</em></li>
                     </ul>
                 </li>
-                <li>METABARCODING
+                <li><strong>METABARCODING</strong>
                     <ul>
                         <li>final_files</li>
+                             <ul>
+                                <li><strong>final_abundance_file.tsv</strong></li>
+                                <li><strong>cluster_seq_keep.txt</strong></li>
+                                <li><strong>cluster_merged.txt</strong></li>
+                                <li><strong>summary.txt</strong></li>
+                             </ul>
                         <li>intermediary_step</li>
+                            <ul>   
+                                 <li>pseudogene</li>
+                                        <ul>
+                                            <li><em> 2 files</em></li>
+                                        </ul>
+                                 <li><em>4 files</em></li>
+                            </ul>
                         <li>Rproducts</li>
+                             <ul>
+                                 <li><em>13 files</em></li>
+                             </ul>
+                        <li><em>4 files</em></li>
                     </ul>
                 </li>
                 <li>[testCOI_abundance_raw.tsv].tabular</li>
@@ -133,6 +149,8 @@ Each rule call a specific R or Python script saved in SCRIPTS directory. Two add
     </ul>
 </body>
 </html>
+
+8 directories, 32 files
 
 
 ### Final outputs :
