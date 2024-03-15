@@ -229,8 +229,10 @@ sort(taxa_sums(f1.data),decreasing = TRUE)
 write.table(otu_table(f1.data),file=paste(RPRODUCT,name,"_abundance.filter1.txt",sep=""),sep="\t",row.names=TRUE,col.names=NA,quote=FALSE)
 write.table(tax_table(f1.data),file=paste(RPRODUCT,name,"_tax.filter1.txt",sep=""),sep="\t",row.names=TRUE,col.names=NA,quote=FALSE)
 
-## Filter2: keep positive data only if congruent between replicates
+
 print('Filter 2/3')
+tryCatch({
+## Filter2: keep positive data only if congruent between replicates
 condition <- function(x) { sum(x) > 0 }
 taxaToKeep <- filter_taxa(f1.data, condition)
 f1.data <- prune_taxa(taxaToKeep, f1.data)
@@ -255,6 +257,11 @@ sort(taxa_sums(f2.data),decreasing = TRUE)
 
 write.table(otu_table(f2.data),file=paste(RPRODUCT,name,".abundance.filter2.txt",sep=""),sep="\t")
 write.table(tax_table(f2.data),file=paste(RPRODUCT,name,".tax.filter2.txt",sep=""),sep="\t")
+},error = function(e) {
+  message("ERROR IN DUPLICATED SAMPLES: One or several samples are not duplicated. The R filtering step cannot be finalised. Please check your samples ","\n",
+  "When the problems linked to the unduplicated samples have been resolved, before re-executing the HAMI pipeline, make sure you have deleted the old files produced by the HAMI pipeline")
+})
+
 
 ## update of files (including metadata), by merging of replicates (by sum)
 merged.data <- merge_samples(f2.data, "biological_unit") # to modify if the variable name of the column for biological units is not named "biological_unit"

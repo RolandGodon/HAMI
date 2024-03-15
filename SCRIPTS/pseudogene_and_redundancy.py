@@ -57,6 +57,13 @@ reading_frame=int(sys.argv[9]) #Reading frame of the DNA sequence
 threshold=int(sys.argv[10])
 stop_codon=sys.argv[11:] # List of codon stop
 
+#Summary file
+Diclog={}
+Diclog["id"]=[]
+Diclog["Ntaxa"]=[]
+Diclog["Nseq"]=[]
+
+
 ###OPEN FILES
 csvfile=open(abundpath) #abundance file open
 Abondance = pd.read_csv(csvfile,delimiter=";",header=0)
@@ -95,7 +102,10 @@ if not os.path.exists(os.path.join(directorypath+"/METABARCODING/intermediary_st
 col.to_csv(os.path.join(directorypath+"/METABARCODING/intermediary_step/"+Name+fragment+'_abundance_'+affiliation+'_raw.csv'),index_label=False,index=False,sep=';')
 
 
-
+#Set logfile of initial file 
+Diclog["id"].append("After.filter.3")
+Diclog["Nseq"].append(int(df.shape[0]))
+Diclog["Ntaxa"].append(int(df["blast_taxonomy"].nunique()))
 
 
 ###############################################################
@@ -139,6 +149,10 @@ if not os.path.exists(os.path.join(directorypath+"/METABARCODING/intermediary_st
     os.makedirs(os.path.join(directorypath+"/METABARCODING/intermediary_step/pseudogene"))
 pseudogene.to_csv(os.path.join(directorypath+"/METABARCODING/intermediary_step/pseudogene/"+Name+fragment+'_pseudogene_deleted.csv'),index_label=False,index=False,sep=';')
 
+#Set logfile for first pseudogene filter 
+Diclog["id"].append("After.filter.pseudogene1")
+Diclog["Nseq"].append(int(realcol.shape[0]))
+Diclog["Ntaxa"].append(int(realcol["blast_taxonomy"].nunique()))
 
 
 #############################################
@@ -434,10 +448,14 @@ for i in DICO:
 
 
 
+
 #####################################################
 ### Compiling the CSV  ##############################
 #####################################################
 
+nseq=0
+listtaxa=[]
+Ntaxa=0
 
 print('Automation complete ')
 print('compilation of files')
@@ -445,7 +463,7 @@ print('compilation of files')
 if not os.path.exists(os.path.join(directorypath+"/METABARCODING/final_files")): #CHECKS WHETHER THE "final_files" DIRECTORY EXISTS IN THE FILE DIRECTORY TREE 
    os.makedirs(os.path.join(directorypath+"/METABARCODING/final_files"))
 
-with open(os.path.join(directorypath+"/METABARCODING/final_files/"+Name+fragment+'_'+affiliation+'_occurence_file.tsv'), 'w') as f:
+with open(os.path.join(directorypath+"/METABARCODING/final_files/"+Name+fragment+'_'+affiliation+'_final_abundance_file.tsv'), 'w') as f:
    i=0
    for key in DICO[0]:
       if key != 'Cluster' and key != 'Seq':
@@ -457,6 +475,12 @@ with open(os.path.join(directorypath+"/METABARCODING/final_files/"+Name+fragment
 
    for i in range(len(DICO)):
       if i not in delposition:
+         #Calcul number of Taxa AND Seq saved in the final files
+         nseq=nseq+int(DICO[i]["Nbr_cluster"][0])
+         if DICO[i]["Taxon_name"][0] not in listtaxa:
+            listtaxa.append(DICO[i]["Taxon_name"][0])
+            Ntaxa=Ntaxa+1
+         #Write file
          [f.write(DICO[i]["Taxon_name"][0] )]
          [f.write('\t')]
          [f.write(str(DICO[i]["Nbr_cluster"][0]))]
@@ -480,6 +504,12 @@ with open(os.path.join(directorypath+"/METABARCODING/final_files/"+Name+fragment
          [f.write('\n')]
 
    for i in range(len(DICO1)):
+      #Calcul number of Taxa AND Seq saved in the final files
+      nseq=nseq+int(DICO1[i]["Nbr_cluster"][0])
+      if DICO1[i]["Taxon_name"][0] not in listtaxa:
+         listtaxa.append(DICO1[i]["Taxon_name"][0])
+         Ntaxa=Ntaxa+1
+      #Write file
       [f.write(DICO1[i]["Taxon_name"][0] )]
       [f.write('\t')]
       [f.write(str(DICO1[i]["Nbr_cluster"][0]))]
@@ -506,7 +536,7 @@ f.close()
 with open(os.path.join(directorypath+"/METABARCODING/final_files/"+Name+fragment+'_'+affiliation+'_cluster_merged.txt'), 'w') as f:
    for key in DICO:
       if key not in delposition :
-         [f.write("> "+ DICO[key]["Taxon_name"][0]+ " : \n")]
+         [f.write(">"+ DICO[key]["Taxon_name"][0]+ "\n")]
          if DICO[key]["Cluster"]:
             for x in DICO[key]["Cluster"]:
                if pd.isna(x)==False:
@@ -514,7 +544,7 @@ with open(os.path.join(directorypath+"/METABARCODING/final_files/"+Name+fragment
             [f.write('\n')]
 
    for key in DICO1:
-      [f.write("> "+ DICO1[key]["Taxon_name"][0]+ " : \n")]
+      [f.write(">"+ DICO1[key]["Taxon_name"][0]+ "\n")]
       if DICO1[key]["Cluster"]:
          for x in DICO1[key]["Cluster"]:
             if pd.isna(x)==False:
@@ -566,7 +596,7 @@ with open(os.path.join(directorypath+"/METABARCODING/final_files/"+Name+fragment
             it=0
             for x in DICO[key]["Cluster"]:
                if pd.isna(x)==False:
-                  [f.write("> "+ DICO[key]["Taxon_name"][0]+ "_" + x + " : \n")]
+                  [f.write(">"+ DICO[key]["Taxon_name"][0]+ "_" + x + "\n")]
                   [f.write(DICO[key]["Seq"][it]+"\n")]
                   it+=1
                [f.write('\n')]
@@ -576,14 +606,26 @@ with open(os.path.join(directorypath+"/METABARCODING/final_files/"+Name+fragment
             it=0
             for x in DICO1[key]["Cluster"]:
                if pd.isna(x)==False:
-                  [f.write("> "+ DICO1[key]["Taxon_name"][0]+ "_" + x + " : \n")]
+                  [f.write(">"+ DICO1[key]["Taxon_name"][0]+ "_" + x + "\n")]
                   [f.write(DICO1[key]["Seq"][it]+"\n")]
                   it+=1
                [f.write('\n')]
 f.close()
 
 
+#Set logfile for second pseudogene filter 
+Diclog["id"].append("After.filter.pseudogene2")
+Diclog["Nseq"].append(int(nseq))
+Diclog["Ntaxa"].append(int(Ntaxa))
 
+#Write log file
+with open(os.path.join(directorypath+"/METABARCODING/final_files/"+Name+fragment+'_'+affiliation+'_summary.txt'), 'w') as f:
+   col = list(Diclog.keys())
+   val = list(Diclog.values())
+   f.write("\t".join(col) + "\n")
+   for line in zip(*val):
+      f.write("\t".join(map(str, line)) + "\n")
+f.close()
 
 print("Programme completed. Have a nice day :) ")
 

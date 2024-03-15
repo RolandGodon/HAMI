@@ -23,6 +23,10 @@ workdir : "/home/penelben/Documents/GitHub/HAMI/" #General path of the projet
 datadir: "/home/penelben/Documents/GitHub/HAMI/DATA/test_data" #Path to data
 Scriptdir :  "/home/penelben/Documents/GitHub/HAMI/SCRIPTS" #Path to scripts 
 
+################
+#First inputs :
+abundance : "[testCOI_abundance.tsv].tabular"
+multi-hit : "[testCOI_multi-affiliations.tsv].tabular"
 
 ################################
 #Information about sample names : 

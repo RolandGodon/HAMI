@@ -78,11 +78,11 @@ name<-args[4] #name of the project, it will be used to import files and write na
 fragment<-args[5] # name of the DNA fragment sequenced,  it will be used to import files and write names before extension of the different output tables.
 threads<-args[6] #threads used for chimera deletion
 
-mt<-fread(multi_namefile,sep=";",header=TRUE) #open multihits file
+mt<-fread(multi_namefile,sep="\t",header=TRUE) #open multihits file
 mh <- data.table(newtaxaname=mt$blast_taxonomy, blast_taxonomy=mt$blast_taxonomy, observation_name=mt$`#observation_name`)
 rm(mt)
 
-at<-fread(abundance_namefile,sep=";",header=TRUE)# open the abundance file
+at<-fread(abundance_namefile,sep="\t",header=TRUE)# open the abundance file
 ab <- data.table(newtaxaname=at$`blast_taxonomy`, blast_taxonomy=at$`blast_taxonomy`, observation_name=at$observation_name)
 
 

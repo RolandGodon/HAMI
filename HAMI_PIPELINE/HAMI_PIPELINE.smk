@@ -39,7 +39,7 @@ rule all:
     """
 
     input:
-        Occurence_table= expand(os.path.join(config["datadir"],"METABARCODING/final_files","{Name}{DNA}_{target_group}_occurence_file.tsv"),Name=config["Name"],
+        Occurence_table= expand(os.path.join(config["datadir"],"METABARCODING/final_files","{Name}{DNA}_{target_group}_final_abundance_file.tsv"),Name=config["Name"],
                         DNA=config["DNA_fragment"], target_group=config["Target_group"]),
         Cluster_merge= expand(os.path.join(config["datadir"],"METABARCODING/final_files","{Name}{DNA}_{target_group}_cluster_merged.txt"),Name=config["Name"],
                         DNA=config["DNA_fragment"], target_group=config["Target_group"]),
@@ -61,8 +61,8 @@ rule Clean_and_Chimeres:
     Finally, it exports three .txt files, a summary of the chimeric sequence deletion step, the list of deleted chimeric sequences and the chimeric sequence-free abundance file.
     """
     input:
-        abundance_data=expand(os.path.join(config["datadir"],"{Name}{DNA}_abundance_raw.csv"),Name=config["Name"],DNA=config["DNA_fragment"]),
-        multi_data=expand(os.path.join(config["datadir"],"{Name}{DNA}_multi-affiliations.csv"),Name=config["Name"],DNA=config["DNA_fragment"])
+        abundance_data=expand(os.path.join(config["datadir"]+"/"+config["abundance"])),
+        multi_data=expand(os.path.join(config["datadir"]+"/"+config["multi-hit"]))
     output: 
         summary=expand(os.path.join(config["datadir"],"chimeras","{Name}{DNA}_chimeras_summary.txt"),Name=config["Name"],DNA=config["DNA_fragment"]),
         chimera_list=expand(os.path.join(config["datadir"],"chimeras","{Name}{DNA}_chimeras_list.txt"),Name=config["Name"],DNA=config["DNA_fragment"]),
@@ -179,7 +179,7 @@ rule Pseudogene_Filter_and_reduce_redundancy:
                         DNA=config["DNA_fragment"])
     
     output:
-        Occurence_table= expand(os.path.join(config["datadir"],"METABARCODING/final_files","{Name}{DNA}_{target_group}_occurence_file.tsv"),Name=config["Name"],
+        Occurence_table= expand(os.path.join(config["datadir"],"METABARCODING/final_files","{Name}{DNA}_{target_group}_final_abundance_file.tsv"),Name=config["Name"],
                         DNA=config["DNA_fragment"], target_group=config["Target_group"]),
         Cluster_merge= expand(os.path.join(config["datadir"],"METABARCODING/final_files","{Name}{DNA}_{target_group}_cluster_merged.txt"),Name=config["Name"],
                         DNA=config["DNA_fragment"], target_group=config["Target_group"]),
