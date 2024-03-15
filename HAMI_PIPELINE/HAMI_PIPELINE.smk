@@ -44,7 +44,10 @@ rule all:
         Cluster_merge= expand(os.path.join(config["datadir"],"METABARCODING/final_files","{Name}{DNA}_{target_group}_cluster_merged.txt"),Name=config["Name"],
                         DNA=config["DNA_fragment"], target_group=config["Target_group"]),
         seq_kept=expand(os.path.join(config["datadir"],"METABARCODING/final_files","{Name}{DNA}_{target_group}_cluster_seq_keep.txt"),Name=config["Name"],
-                        DNA=config["DNA_fragment"], target_group=config["Target_group"])
+                        DNA=config["DNA_fragment"], target_group=config["Target_group"]),
+        summaryfile=expand(os.path.join(config["datadir"],"METABARCODING/final_files","{Name}{DNA}_{target_group}_summary.txt"),Name=config["Name"],
+                        DNA=config["DNA_fragment"], target_group=config["Target_group"]),
+
 
 
 
@@ -184,6 +187,8 @@ rule Pseudogene_Filter_and_reduce_redundancy:
         Cluster_merge= expand(os.path.join(config["datadir"],"METABARCODING/final_files","{Name}{DNA}_{target_group}_cluster_merged.txt"),Name=config["Name"],
                         DNA=config["DNA_fragment"], target_group=config["Target_group"]),
         seq_kept=expand(os.path.join(config["datadir"],"METABARCODING/final_files","{Name}{DNA}_{target_group}_cluster_seq_keep.txt"),Name=config["Name"],
+                        DNA=config["DNA_fragment"], target_group=config["Target_group"]),
+        summaryfile=expand(os.path.join(config["datadir"],"METABARCODING/final_files","{Name}{DNA}_{target_group}_summary.txt"),Name=config["Name"],
                         DNA=config["DNA_fragment"], target_group=config["Target_group"])
 
 
