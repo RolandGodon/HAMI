@@ -16,7 +16,7 @@ The role of HAMI snakemake pipeline is to process the output of the FROGS pipeli
 <br />
 <br />
 Note that for running HAMI pipeline in contexte of HAMI framework, it is also necessary that your samples can be discrimated based on their name. Please use alphabectic prefix  for it e.g : 
-Metabarcoding samples = META0001 while Barcoding sample = BAR0001 and control samples = NC(P/I/E)00001.
+Metabarcoding samples = META0001 while Barcoding sample = BAR0001 and control samples = NC(P/p | I/i | E/e)00001.
 <br />
 <br />
 Also, duplicate of metabarcoding samples and control samples are necessary. Discrimination between duplicate will be done using suffix : e.g META0001-A / META0001-B. 
