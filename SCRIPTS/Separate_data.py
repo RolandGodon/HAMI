@@ -68,7 +68,7 @@ for i in colname[11:]:   # 11th first colum are already keep in "first" variable
     else : 
         if re.search(prefixMETA, i): #search metabarcoding samples using prefix nomenclature
             METABARCODE.append(i)
-        if re.search(prefixCONTROL+r'(I|E|P)', i): #search control samples using prefix nomenclature
+        if re.search(prefixCONTROL+r'(I|E|P)', i, re.IGNORECASE): #search control samples using prefix nomenclature
             CONTROL.append(i)
 
 ### PRODUCE SUBSET OF THE INPUT FILE  :  
@@ -126,9 +126,9 @@ with open(os.path.join(outputdir,"METABARCODING/"+name+fragment+"_Metadata_METAB
         elif re.search(duplicat[-1],i) and  re.search(r'-{}$'.format(duplicat[-1]), i):
             row = [i, "2", "no", i[:-2], name]
             csvwriter.writerow(row)
-        elif re.search(r'^NC(I|E|P)', i) and  re.search(r'-{}$'.format(duplicat[0]), i):
+        elif re.search(r'^NC(I|E|P)', i, re.IGNORECASE) and  re.search(r'-{}$'.format(duplicat[0]), i):
             row= [i, "1", "negative", i[:-2], name]
             csvwriter.writerow(row)
-        elif re.search(r'^NC(I|E|P)', i) and  re.search(r'-{}$'.format(duplicat[-1]), i):
+        elif re.search(r'^NC(I|E|P)', i, re.IGNORECASE) and  re.search(r'-{}$'.format(duplicat[-1]), i):
             row= [i, "2", "negative", i[:-2], name]
             csvwriter.writerow(row)
