@@ -34,9 +34,9 @@ output : Pour chaque site, un fichier fasta avec les séquences BB & CR est prod
 ###### PARAM YOUR PROJECT :
 
 
-outputdir1="/home/penelben/Documents/THESE/AGRIBIODIV/AGRIB04/DATA/BARCODE/FASTA1"
-outputdir2="/home/penelben/Documents/THESE/AGRIBIODIV/AGRIB04/DATA/BARCODE/FASTA1/BARCODE"
-nameprojet='CMEY'
+outputdir1="/home/penelben/Documents/THESE/AGRIBIODIV/AGRIB06/DATA/BARCODE/FASTA1"
+outputdir2="/home/penelben/Documents/THESE/AGRIBIODIV/AGRIB06/DATA/BARCODE/FASTA1/BARCODE"
+nameprojet=['FAUN','JHAR','WAS']
 prim1="CR" # target the 5'-----> middle of the DNA framgnent
 prim2="BB" #target the middle of the DNA fragment -----> 3'
 phylum='Coleoptera'
@@ -100,100 +100,101 @@ name=pd.Series(BARCODE_Prim_SET1.blast_taxonomy)
 identity=pd.Series(BARCODE_Prim_SET1.blast_perc_identity)
 
 for i in BARCODE_Prim_SET1 :
-    if nameprojet in i :                                                              #Recognition of sample columns
-        DICO["SAMPLE"].append(i)
-        site=pd.Series(BARCODE_Prim_SET1[i])
-        for j in site:
-            if j > 0 and j > MAX :                            #If a sequence has a higher read abundance than a previously recorded sequence
-                if phylum not in str(name.iloc[it]) :         #If the taxonomic affiliation associated with this sequence is other than the expected phylum 
-                    try :
-                        num=float(identity.iloc[it])          #And the affiation have a pourcentage of identity > to the threshold, this majority sequence is discarded.
-                        if num >=threshold:
-                            it+=1
-                            continue
-                        else:                               #If not, we converse this new majority sequence
+    for prefix in nameprojet :
+        if prefix in i :                                                              #Recognition of sample columns
+            DICO["SAMPLE"].append(i)
+            site=pd.Series(BARCODE_Prim_SET1[i])
+            for j in site:
+                if j > 0 and j > MAX :                            #If a sequence has a higher read abundance than a previously recorded sequence
+                    if phylum not in str(name.iloc[it]) :         #If the taxonomic affiliation associated with this sequence is other than the expected phylum 
+                        try :
+                            num=float(identity.iloc[it])          #And the affiation have a pourcentage of identity > to the threshold, this majority sequence is discarded.
+                            if num >=threshold:
+                                it+=1
+                                continue
+                            else:                               #If not, we converse this new majority sequence
                             
-                            if position >0 :                #Keep the second most abundant sequence
-                                oldposition=position
-                                oldMAX=MAX                                                                     
-                                position=it
-                                MAX=j
-                            else:                           #preserve the most abundant sequence
-                                position=it
-                                MAX=j
+                                if position >0 :                #Keep the second most abundant sequence
+                                    oldposition=position
+                                    oldMAX=MAX                                                                     
+                                    position=it
+                                    MAX=j
+                                else:                           #preserve the most abundant sequence
+                                    position=it
+                                    MAX=j
 
                     
-                    except ValueError:
+                        except ValueError:
                         
-                        if "data" in str(identity.iloc[it]): #If this sequence has no additional information, it is discarded.
-                            it+=1
-                            continue
-                        else:                               #If not, we converse this new majority sequence
-                            if position >0 :                #Keep the second most abundant sequence
-                                oldposition=position
-                                oldMAX=MAX                                                                     
-                                position=it
-                                MAX=j
-                            else:                           #preserve the most abundant sequence
-                                position=it
-                                MAX=j
+                            if "data" in str(identity.iloc[it]): #If this sequence has no additional information, it is discarded.
+                                it+=1
+                                continue
+                            else:                               #If not, we converse this new majority sequence
+                                if position >0 :                #Keep the second most abundant sequence
+                                    oldposition=position
+                                    oldMAX=MAX                                                                     
+                                    position=it
+                                    MAX=j
+                                else:                           #preserve the most abundant sequence
+                                    position=it
+                                    MAX=j
 
-                else:                                #If the taxonomic affiliation associated with this sequence is other the expected phylum 
-                    if position >0 :                 #Keep the second most abundant sequence
-                        oldposition=position
-                        oldMAX=MAX                                                                     
-                        position=it
-                        MAX=j
-                    else:                           #Keep the most abundant sequence
-                        position=it
-                        MAX=j
+                    else:                                #If the taxonomic affiliation associated with this sequence is other the expected phylum 
+                        if position >0 :                 #Keep the second most abundant sequence
+                            oldposition=position
+                            oldMAX=MAX                                                                     
+                            position=it
+                            MAX=j
+                        else:                           #Keep the most abundant sequence
+                            position=it
+                            MAX=j
 
-            elif j>oldMAX and j<MAX:                      #If the number of reads associated with a sequence is lower than for the most important sequence but higher than for the second most important sequence 
-                if phylum not in str(name.iloc[it]) :     # and the taxonomic affiliation associated with this sequence is other than the expected target taxon
-                    try :
-                        num=float(identity.iloc[it])       #And the affiation have a pourcentage of identity > to the threshold, this majority sequence is discarded.
-                        if num >=threshold:
-                            it+=1
-                            continue
-                        else:                                #If not, we converse this new secondary majority sequence
+                elif j>oldMAX and j<MAX:                      #If the number of reads associated with a sequence is lower than for the most important sequence but higher than for the second most important sequence 
+                    if phylum not in str(name.iloc[it]) :     # and the taxonomic affiliation associated with this sequence is other than the expected target taxon
+                        try :
+                            num=float(identity.iloc[it])       #And the affiation have a pourcentage of identity > to the threshold, this majority sequence is discarded.
+                            if num >=threshold:
+                                it+=1
+                                continue
+                            else:                                #If not, we converse this new secondary majority sequence
                                 oldposition=it
                                 oldMAX=j                                                                    
 
-                    except ValueError:
+                        except ValueError:
                         
-                        if "data" in str(identity.iloc[it]):         #If this sequence has no additional information, it is discarded.
-                            it+=1
-                            continue
-                        else:                               #If not, we converse this new secondary majority sequence
-                            oldposition=it
-                            oldMAX=j
+                            if "data" in str(identity.iloc[it]):         #If this sequence has no additional information, it is discarded.
+                                it+=1
+                                continue
+                            else:                               #If not, we converse this new secondary majority sequence
+                                oldposition=it
+                                oldMAX=j
 
-                else:
-                    oldposition=it
-                    oldMAX=j
+                    else:
+                        oldposition=it
+                        oldMAX=j
 
 
-            it+=1
+                it+=1
         
-        #SAVED POSITION OF THE MAJORITARIES SEQUENCES 
-        if position != -1:  
-            DICO["Prim_SET1"].append(seq.iloc[position])
-        else:
-            DICO["Prim_SET1"].append("")
-        if oldposition != -1:
-            DICO["Prim_SET1_2"].append(seq.iloc[oldposition])
-        else:
-            DICO["Prim_SET1_2"].append("")
+            #SAVED POSITION OF THE MAJORITARIES SEQUENCES 
+            if position != -1:  
+                DICO["Prim_SET1"].append(seq.iloc[position])
+            else:
+                DICO["Prim_SET1"].append("")
+            if oldposition != -1:
+                DICO["Prim_SET1_2"].append(seq.iloc[oldposition])
+            else:
+                DICO["Prim_SET1_2"].append("")
 
-        DICO["nbr_read_Prim_SET1"].append(MAX)
-        DICO["nbr_read_Prim_SET1_2"].append(oldMAX)
+            DICO["nbr_read_Prim_SET1"].append(MAX)
+            DICO["nbr_read_Prim_SET1_2"].append(oldMAX)
 
 
-        it=0
-        MAX=0
-        position=-1
-        oldposition=-1
-        oldMAX=0
+            it=0
+            MAX=0
+            position=-1
+            oldposition=-1
+            oldMAX=0
 
 
 ###############
@@ -209,96 +210,97 @@ identity=pd.Series(BARCODE_Prim_SET2.blast_perc_identity)
 
 
 for i in BARCODE_Prim_SET2 :
-    if nameprojet in i and i in DICO["SAMPLE"]:
-        site=pd.Series(BARCODE_Prim_SET2[i])
-        for j in site:
-            if j > 0 and j > MAX :
-                if phylum not in str(name.iloc[it]) :
-                    try :
-                        num=float(identity.iloc[it])
-                        if num >=threshold:
-                            it+=1
-                            continue
-                        else:
-                            if position>0:
-                                oldposition=position
-                                oldMAX=MAX
-                                position=it
-                                MAX=j 
+    for prefix in nameprojet:
+        if prefix in i and i in DICO["SAMPLE"]:
+            site=pd.Series(BARCODE_Prim_SET2[i])
+            for j in site:
+                if j > 0 and j > MAX :
+                    if phylum not in str(name.iloc[it]) :
+                        try :
+                            num=float(identity.iloc[it])
+                            if num >=threshold:
+                                it+=1
+                                continue
                             else:
-                                position=it
-                                MAX=j
+                                if position>0:
+                                    oldposition=position
+                                    oldMAX=MAX
+                                    position=it
+                                    MAX=j 
+                                else:
+                                    position=it
+                                    MAX=j
 
                     
-                    except ValueError:
-                        if "data" in str(identity.iloc[it]):
-                            it+=1
-                            continue
-                        else:
-                            if position>0:
-                                oldposition=position
-                                oldMAX=MAX
-                                position=it
-                                MAX=j 
+                        except ValueError:
+                            if "data" in str(identity.iloc[it]):
+                                it+=1
+                                continue
                             else:
-                                position=it
-                                MAX=j
-                else:
-                    if position>0:
-                        oldposition=position
-                        oldMAX=MAX
-                        position=it
-                        MAX=j 
+                                if position>0:
+                                    oldposition=position
+                                    oldMAX=MAX
+                                    position=it
+                                    MAX=j 
+                                else:
+                                    position=it
+                                    MAX=j
                     else:
-                        position=it
-                        MAX=j
+                        if position>0:
+                            oldposition=position
+                            oldMAX=MAX
+                            position=it
+                            MAX=j 
+                        else:
+                            position=it
+                            MAX=j
 
-            elif j>oldMAX and j<MAX:                                               
-                if phylum not in str(name.iloc[it]) :                    
-                    try :
-                        num=float(identity.iloc[it])                             
-                        if num >=threshold:
-                            it+=1
-                            continue
-                        else:                               
+                elif j>oldMAX and j<MAX:                                               
+                    if phylum not in str(name.iloc[it]) :                    
+                        try :
+                            num=float(identity.iloc[it])                             
+                            if num >=threshold:
+                                it+=1
+                                continue
+                            else:                               
                                 oldposition=it
                                 oldMAX=j                                                                    
 
-                    except ValueError:
+                        except ValueError:
                         
-                        if "data" in str(identity.iloc[it]):         
-                            it+=1
-                            continue
-                        else:                              
-                            oldposition=it
-                            oldMAX=j
+                            if "data" in str(identity.iloc[it]):         
+                                it+=1
+                                continue
+                            else:                              
+                                oldposition=it
+                                oldMAX=j
 
-                else:
-                    oldposition=it
-                    oldMAX=j
+                    else:
+                        oldposition=it
+                        oldMAX=j
 
-            it+=1
+                it+=1
 
-        if position != -1:
-            DICO["Prim_SET2"].append(seq.iloc[position])
-        else:
-            DICO["Prim_SET2"].append("")
-
-
-        if oldposition != -1:
-            DICO["Prim_SET2_2"].append(seq.iloc[oldposition])
-        else:
-            DICO["Prim_SET2_2"].append("")
-
-        DICO["nbr_read_Prim_SET2"].append(MAX)
-        DICO["nbr_read_Prim_SET2_2"].append(oldMAX)
+            if position != -1:
+                DICO["Prim_SET2"].append(seq.iloc[position])
+            else:
+                DICO["Prim_SET2"].append("")
 
 
-        it=0
-        MAX=0
-        position=-1
-        oldposition=-1
-        oldMAX=0
+            if oldposition != -1:
+                DICO["Prim_SET2_2"].append(seq.iloc[oldposition])
+            else:
+                DICO["Prim_SET2_2"].append("")
+
+            DICO["nbr_read_Prim_SET2"].append(MAX)
+            DICO["nbr_read_Prim_SET2_2"].append(oldMAX)
+
+
+            it=0
+            MAX=0
+            position=-1
+            oldposition=-1
+            oldMAX=0
 
 
 ##################################
@@ -586,8 +588,8 @@ if not os.path.exists(outputdir2):  #Check that there is a barcode directory in 
     os.mkdir(outputdir2)
 os.chdir(outputdir2)
 
-texte=open("Log_BARCODING_MISSING.txt","w") ## FILE WHO SAVE MISSING BARCODE SAMPLE NAMES
-fullbarcode=open("FULL_BARCODE.fasta","w") ## FILE WHO SAVE ALL BARCODE IN ONE FILE
+texte=open("1.Log_BARCODING_MISSING.txt","w") ## FILE WHO SAVE MISSING BARCODE SAMPLE NAMES
+fullbarcode=open("1.FULL_BARCODE.fasta","w") ## FILE WHO SAVE ALL BARCODE IN ONE FILE
 
 for i in range(len(DICO["SAMPLE"])):
     if DICO["COMMENT"][i] =="none":                                   #IF FIRST BARCODE OK
@@ -643,7 +645,7 @@ fullbarcode.close()
 import csv
 
 #Ouverture d'un fichier CSV en mode écriture
-with open('BARCODE.csv', 'w', newline='') as fichier_csv:
+with open('1.BARCODE.csv', 'w', newline='') as fichier_csv:
     writer = csv.writer(fichier_csv)
 
     writer.writerow(DICO.keys())
