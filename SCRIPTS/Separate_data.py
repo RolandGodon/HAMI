@@ -123,7 +123,7 @@ with open(os.path.join(outputdir,"METABARCODING/"+name+fragment+"_Metadata_METAB
         if re.search(prefixMETA, i) and  re.search(r'-{}$'.format(duplicat[0]), i):
             row = [i, "1", "no", i[:-2], name]
             csvwriter.writerow(row)
-        elif re.search(duplicat[-1],i) and  re.search(r'-{}$'.format(duplicat[-1]), i):
+        elif re.search(prefixMETA,i) and  re.search(r'-{}$'.format(duplicat[-1]), i):
             row = [i, "2", "no", i[:-2], name]
             csvwriter.writerow(row)
         elif re.search(r'^NC(I|E|P)', i, re.IGNORECASE) and  re.search(r'-{}$'.format(duplicat[0]), i):
