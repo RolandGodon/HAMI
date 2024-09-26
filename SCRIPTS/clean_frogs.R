@@ -131,6 +131,12 @@ mh$tx7<-gsub("DHJ$","",mh$tx7)
 mh$tx7<-gsub("-GLA$","",mh$tx7)
 mh$tx7<-gsub("_L.$","",mh$tx7)
 mh$tx7<-gsub("_CHU$","",mh$tx7)
+mh$tx7<-gsub("_MG$","",mh$tx7)
+mh$tx7<-gsub("_AFRC-TZ-_CHU$","",mh$tx7)
+mh$tx7<-gsub("_AFRC-SA-SSC$","",mh$tx7)
+mh$tx7<-gsub("_PEH$","",mh$tx7)
+mh$tx7<-gsub("_AFRC-KZN-$","",mh$tx7)
+
 
 ### This line allow to found other wrong pattern that should be add to the previous list 
 # erreur=mh[!grepl("^[A-Z][a-z]+_[a-z\\-]+$", mh$tx7) & !(mh$tx7=="unknown species"),]
@@ -231,7 +237,11 @@ ab$tx7<-gsub("DHJ$","",ab$tx7)
 ab$tx7<-gsub("-GLA$","",ab$tx7)
 ab$tx7<-gsub("_L.$","",ab$tx7)
 ab$tx7<-gsub("_CHU$","",ab$tx7)
-
+mh$tx7<-gsub("_MG$","",mh$tx7)
+mh$tx7<-gsub("_AFRC-TZ-_CHU$","",mh$tx7)
+mh$tx7<-gsub("_AFRC-SA-SSC$","",mh$tx7)
+mh$tx7<-gsub("_PEH$","",mh$tx7)
+mh$tx7<-gsub("_AFRC-KZN-$","",mh$tx7)
 
 ### This line allow to found other wrong pattern that should be add to the previous list 
 #erreur=ab[!grepl("^[A-Z][a-z]+_[a-z\\-]+$", ab$tx7) & !(ab$tx7=="unknown species") & !(ab$tx7=="Multi-affiliation"),]
