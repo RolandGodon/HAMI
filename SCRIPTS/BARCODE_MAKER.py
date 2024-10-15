@@ -3,19 +3,21 @@
 
 """
 Author : Benoit Penel
-Date : 28/02/2024
+Date : 10/15/2024
 version : 3.0
 
 
 
+run command : python3 BARCODE_MAKER.py /path/to/prim1.csv /path/to/prim2.csv    
+
 #### Stage 1: Recovery of majority sequences in each samples for both primers set:
 
-This script parses the two abundance files resulting from the sequencing of BARCODE samples with two sets of primers :
+This script parses the two abundance files resulting from the sequencing of BARCODE samples (which were first filtered with BARCODE_pseudogene_filter.py) with the two sets of primers :
 BF3 and BR2 primer (CCHGAYATRGCHTTYCCHCG / TCDGGRTGNCCRAARAAYCA; Elbrecht and Leese 2017; Elbrecht et al. 2019)
 and LCO1490 and Ill_C_R (GGTCAACAAATCATAAAGATATTGG/ GGIGGRTAIACIGTTCAICC - Shokralla et al. 2015).
 Different primers can be used but change need to be done.
 
-Using two independent loops (one for each set of primers), the information associated with the sequences with the highest number of reads 
+Using two independent loops (one for each set of primers), the information associated with the sequences with the highest number of reads are saved
 in each sample. This information is stored in a Python dictionary. Note that the majority sequences selected may not be the majority sequences if :
 
 - The majority sequence is taxonomically affiliated to an organisms other than the targeted phylum with a percentage of identity superiror to the threshold.
@@ -23,23 +25,21 @@ in each sample. This information is stored in a Python dictionary. Note that the
 
 ### Step 2: Merging of complementary DNA sequences target with two set of primers :
 
-Ces séquences sont ensuite alignées et fusionnées pour constituer le BARCODE. Si l'alignement des séquences ne produit pas un barcode de 658 avec 100% de match dans la région de chevauchement,
-le barcode produit n'est pas conservé.
+CR and BB sequences that have been previously identified as the most abundant in a given samples are merged together. If the merging do not produce a full Barcode of 658 bp and with zero mismatch in the overlapping regions, this later is not kept. 
 
 
-output : Pour chaque site, un fichier fasta avec les séquences BB & CR est produit, ainsi qu'un second fichier fasta avec le barcode reconstruit quand celui-ci est complet/fonctionnel
-
+output : For each samples, 1 fasta file containing the most abundante BB and CR sequence is produces as well as a second file with the reconstructed barcode if no issue in the lenght and mismatch in the overlapping region.
 """
 
 ###### PARAM YOUR PROJECT :
 
 
-outputdir1="/home/penelben/Documents/THESE/AGRIBIODIV/AGRIB06/DATA/BARCODE/FASTA1"
-outputdir2="/home/penelben/Documents/THESE/AGRIBIODIV/AGRIB06/DATA/BARCODE/FASTA1/BARCODE"
-nameprojet=['FAUN','JHAR','WAS']
+outputdir1="/home/lbenoit/Documents/Programmes/HAMI/DATA/RUN_AGRIB07/AgriB07_bar/FASTA1"
+outputdir2="/home/lbenoit/Documents/Programmes/HAMI/DATA/RUN_AGRIB07/AgriB07_bar/FASTA1/BARCODE"
+nameprojet=['FAUN','JHAR','CMEY','m2-JHAR']
 prim1="CR" # target the 5'-----> middle of the DNA framgnent
 prim2="BB" #target the middle of the DNA fragment -----> 3'
-phylum='Coleoptera'
+phylum='Insecta'
 barcode_length=int(658)
 threshold=int(97)
 
@@ -85,6 +85,7 @@ BARCODE_Prim_SET2 = pd.read_csv(csvfile,delimiter=";",header=0)
 #####################################
 ####### SEARCH FOR MAJORITY SEQUENCE
 
+print("Research of the majority sequence in each samples for ", prim1, " primer")
 ######
 ## Prim_SET1
 
@@ -197,6 +198,7 @@ for i in BARCODE_Prim_SET1 :
             oldMAX=0
 
 
+print("Research of the majority sequence in each samples for ", prim2, " primer")
 ###############
 ### Prim_SET2
 
@@ -307,7 +309,7 @@ for i in BARCODE_Prim_SET2 :
 ###### CREATING FASTA FILES
 
 
-
+print("Write fasta files")
 if not os.path.exists(outputdir1): #Check that there is a fasta directory in which the majority of sequences are stored.
     os.mkdir(outputdir1)
 os.chdir(outputdir1)
@@ -320,9 +322,9 @@ for i in range(len(DICO["SAMPLE"])):
 
 
 #############################################################
-####Fragments alignement obtained with the two set of primers and barcode creation
+####Fragments alignment obtained with the two set of primers and barcode creation
 
-
+print("Sequence alignment")
 ### First try :
 for i in range(len(DICO["SAMPLE"])):
     try:
@@ -390,6 +392,7 @@ for i in range(len(DICO["SAMPLE"])):
 
 
 ### Second try : 
+print("Second alignment try")
 # Use the second majority sequence
 DICO2={}
 DICO2["SAMPLE"]=[]
@@ -583,7 +586,7 @@ for i in range(len(DICO["SAMPLE"])) :
 ##########################################
 ###### CREATING FASTA BARCODE FILES
 
-
+print("Write barcode files")
 if not os.path.exists(outputdir2):  #Check that there is a barcode directory in which the majority of sequences are stored.
     os.mkdir(outputdir2)
 os.chdir(outputdir2)
@@ -656,7 +659,9 @@ with open('1.BARCODE.csv', 'w', newline='') as fichier_csv:
 
 
 
-     
+###########
+## END ####
+###########     
 
 
 ###############

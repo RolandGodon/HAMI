@@ -3,8 +3,8 @@
 
 """
 Author : Benoit Penel
-Date : 11/24/2023
-version : 1.0
+Date : 10/15/2024
+version : 3.0
 PYTHON3
 
 
@@ -23,11 +23,11 @@ import numpy
 
 Abundance_file=sys.argv[1]
 
-nameprojet="AgriB04" #to modify put the name of your project
+nameprojet="AgriB07" #to modify put the name of your project
 fragment="CR" # to modify CR or BB
-outputdir="/home/penelben/Documents/THESE/AGRIBIODIV/AGRIB04/DATA/BARCODE/"
+outputdir="/home/lbenoit/Documents/Programmes/HAMI/DATA/RUN_AGRIB07/AgriB07_bar/"
 
-DNA_length=int(319) #To modify according to CC or BB
+DNA_length=int(325) #To modify according to CR (325) or BB (418)
 reading_frame=int(1) #Check it before use it according to primer used
 stop_codon=["TAA","TAG"] 
 
@@ -35,6 +35,7 @@ stop_codon=["TAA","TAG"]
 ###OPEN FILES
 csvfile=open(Abundance_file)
 BARCODE = pd.read_csv(csvfile,delimiter="\t",header=0)
+
 
 
 ###############################################################
@@ -48,6 +49,9 @@ name=pd.Series(BARCODE.blast_taxonomy)
 lenaccepted=[DNA_length-9,DNA_length-6,DNA_length-3,DNA_length,DNA_length+3,DNA_length+6,DNA_length+9] # Defines the range of DNA sequence lengths to be considered.  
 accepted=[]
 deleted=[]
+
+
+print("Pseudogene research in ", fragment)
 
 # CHECK INDEL IN EACH SEQUENCES
 for i in range(len(seq)):
@@ -73,6 +77,7 @@ for i in range(len(seq)):
 
 pseudogene=BARCODE.iloc[deleted] #Keep pseudogenic OTU using position saved in deleted list 
 realcol=BARCODE.iloc[accepted] #Keep non pseudogenic OTU using position saved in accepted list  
+
 realcol.to_csv(os.path.join(outputdir+nameprojet+fragment+'_abundance_pseudogene_filtred.csv'),index_label=False,index=False,sep=';') #Abundance table without lines associated with pseudogenes
 
 
@@ -80,4 +85,6 @@ if not os.path.exists(os.path.join(outputdir+"pseudogenes/")):#Checks whether th
     os.makedirs(os.path.join(outputdir+"pseudogenes/"))
 
 pseudogene.to_csv(os.path.join(outputdir+"pseudogenes/"+nameprojet+fragment+'_pseudogene_deleted.csv'),index_label=False,index=False,sep=';') #Abundance table with lines associated with pseudogenes
+
+print("Pseudogene research in ", fragment, " over")
 
