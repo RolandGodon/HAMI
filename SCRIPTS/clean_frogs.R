@@ -122,6 +122,7 @@ mh$tx7<-gsub("^.*(unidentified).*$","unknown species",mh$tx7,perl=TRUE)
 mh$tx7<-gsub("^.*(sp)\\..*$","unknown species",mh$tx7,perl=TRUE)
 mh$tx7<-gsub("^.*(sp)$","unknown species",mh$tx7,perl=TRUE)
 mh$tx7<-gsub("^[A-Z][a-z]+_[a-z\\.]+_[a-z\\-]+$","unknown species",mh$tx7,perl=TRUE)
+ab$tx7[!grepl("^[A-Z][a-z]+_[a-z]+$", ab$tx7)] <- "unknown species"
 mh$tx7[grepl("^ *$",mh$tx7)]<-"unknown species"
 
 ## Delete in the species field upper letter at the end of species name
@@ -228,6 +229,7 @@ ab$tx7<-gsub("^.*(unidentified).*$","unknown species",ab$tx7,perl=TRUE)
 ab$tx7<-gsub("^.*(sp)\\..*$","unknown species",ab$tx7,perl=TRUE)
 ab$tx7<-gsub("^.*(sp)$","unknown species",ab$tx7,perl=TRUE)
 ab$tx7<-gsub("^[A-Z][a-z]+_[a-z\\.]+_[a-z\\-]+$","unknown species",ab$tx7,perl=TRUE)
+ab$tx7[!grepl("^[A-Z][a-z]+_[a-z]+$", ab$tx7)] <- "unknown species"
 ab$tx7[grepl("^ *$",ab$tx7)]<-"unknown species"
 
 ## Delete in the species field upper letter at the end of species name
