@@ -4,10 +4,10 @@
 - **Please cite:** [![doi](https://img.shields.io/static/v1?label=doi&message=DOI)](DOI)
 <br />
 
-**Towards large-scale monitoring of biodiversity: a Human-Assisted Molecular Identification (HAMI) framework using metabarcoding while accounting for abundances and systemic errors**
+**The best of two worlds: toward large-scale monitoring of biodiversity combining COI metabarcoding and optimized parataxonomic validation**
 <br />
-*Benoit Penel, Laure Benoit, Axel Bourdonné, Laurent Soldati, Gael Kergoat, Julien Haran and Christine Meynard* <br />
-*Method in Ecology and Evolution, XXXXX, XXXXX 2024*<br />
+*Penel, B., Meynard, C.N., Benoit, L., Bourdonné, A., Clamens, A.-L., Soldati, L., Migeon, A., Chapuis, M.P., Kergoat, G.J.  and  Haran, J.* <br />
+*Ecography, XXXXX, XXXXX 2024*<br />
 <br />
 
 
